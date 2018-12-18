@@ -9,7 +9,7 @@
  *
  *  version:  major, minor, patch
  */
-#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (0 << 8) | 1)
+#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (0 << 8) | 2)
 
 
 static inline unsigned int   mulle_stacktrace_get_version_major( void)
@@ -50,10 +50,19 @@ void   _mulle_stacktrace_init( struct _mulle_stacktrace *stacktrace,
                                int (*trim_arse_fat)( char *),
                                int (*is_boring)( char *, int size));
 
+enum mulle_stacktrace_format
+{
+   mulle_stacktrace_normal     = 0,
+   mulle_stacktrace_compressed = 1,
+};
+
 // stacktrace may be NULL
-void  _mulle_stacktrace( struct _mulle_stacktrace *stacktrace, int offset, int tracelevel, FILE *fp);
+void  _mulle_stacktrace( struct _mulle_stacktrace *stacktrace,
+                         int offset,
+                         enum mulle_stacktrace_format tracelevel,
+                         FILE *fp);
 
 static inline void  mulle_stacktrace( struct _mulle_stacktrace *stacktrace, FILE *fp)
 {
-   _mulle_stacktrace( stacktrace, 2, 0, fp);
+   _mulle_stacktrace( stacktrace, 1, mulle_stacktrace_compressed, fp);
 }

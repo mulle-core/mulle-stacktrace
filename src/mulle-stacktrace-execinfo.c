@@ -79,19 +79,19 @@ static int   trim_arse_fat( char *s)
 }
 
 
-static char   *trim_no_belly_fat( char *s)
+static char   *keep_belly_fat( char *s)
 {
    return( s);
 }
 
 
-static int   trim_no_arse_fat( char *s)
+static int   keep_arse_fat( char *s)
 {
    return( (int) strlen( s));
 }
 
 
-static int  boring( char *s, int size)
+static int   trim_boring_functions( char *s, int size)
 {
    if( size == 3 && ! strncmp( s, "0x0", 3))
       return( 1);
@@ -110,19 +110,22 @@ static int  boring( char *s, int size)
    return( 0);
 }
 
-static int  is_not_boring( char *s, int size)
+static int   keep_boring_functions( char *s, int size)
 {
    return( 0);
 }
 
 
-void   _mulle_stacktrace( struct _mulle_stacktrace *stacktrace, int offset, int tracelevel, FILE *fp)
+void   _mulle_stacktrace( struct _mulle_stacktrace *stacktrace,
+                          int offset,
+                          enum mulle_stacktrace_format format,
+                          FILE *fp)
 {
    static struct _mulle_stacktrace   dummy =
    {
-      trim_no_belly_fat,
-      trim_no_arse_fat,
-      is_not_boring
+      trim_belly_fat,
+      trim_arse_fat,
+      trim_boring_functions
    };
 
    if( ! stacktrace)
@@ -150,7 +153,7 @@ void   _mulle_stacktrace( struct _mulle_stacktrace *stacktrace, int offset, int 
       while( p > sentinel)
       {
          s = *--p;
-         if( tracelevel > 2)
+         if( format == mulle_stacktrace_normal)
          {
             fprintf( fp, "%s%s", delim, s);
             delim = "|";
@@ -173,11 +176,11 @@ void   _mulle_stacktrace( struct _mulle_stacktrace *stacktrace, int offset, int 
 
 
 void   _mulle_stacktrace_init( struct _mulle_stacktrace *stacktrace,
-                               char *(*trim_belly_fat)( char *),
-                               int (*trim_arse_fat)( char *),
-                               int (*is_boring)( char *, int size))
+                               char *(*p_trim_belly_fat)( char *),
+                               int (*p_trim_arse_fat)( char *),
+                               int (*p_is_boring)( char *, int size))
 {
-   stacktrace->trim_belly_fat = trim_belly_fat ? trim_belly_fat : trim_no_belly_fat;
-   stacktrace->trim_arse_fat  = trim_arse_fat ? trim_arse_fat : trim_no_arse_fat;
-   stacktrace->is_boring      = is_boring ? is_boring : is_not_boring;
+   stacktrace->trim_belly_fat = p_trim_belly_fat ? p_trim_belly_fat : keep_belly_fat;
+   stacktrace->trim_arse_fat  = p_trim_arse_fat ? p_trim_arse_fat : keep_arse_fat;
+   stacktrace->is_boring      = p_is_boring ? p_is_boring : keep_boring_functions;
 }

@@ -5,10 +5,12 @@ sudo: required
 
 addons:
   apt:
+    sources:
+      - sourceline: 'ppa:george-edison55/cmake-3.x'
+
     packages:
       - cmake
       - cmake-data
-
 
 before_install:
    - curl -sS "https://www.mulle-kybernetik.com/dists/debian-admin-pub.asc" | sudo apt-key add -
@@ -17,5 +19,5 @@ before_install:
    - sudo apt-get -y install mulle-sde mulle-test
 
 script: |
-   mulle-sde -v craft -V
-   [ ! -d test ] || mulle-env -c "mulle-test -v"
+   mulle-sde -v craft
+   [ -d test ] && mulle-sde -v test

@@ -140,11 +140,12 @@ create_headers_file()
    local text_hdr
 
    case "${MULLE_SDE_CMAKE_HEADERS_FILE}" in
-      "DISABLED")
-         log_verbose "Header generation disabled by MULLE_SDE_CMAKE_HEADERS_FILE=DISABLED"
+      DISABLE*)
+         log_verbose "Header generation disabled by MULLE_SDE_CMAKE_HEADERS_FILE=DISABLE"
+         return
       ;;
 
-      "NONE")
+      NONE)
          text_hdr="# Header generation disabled by MULLE_SDE_CMAKE_HEADERS_FILE=NONE"
          MULLE_SDE_CMAKE_HEADERS_FILE=""
       ;;
@@ -211,11 +212,12 @@ create_sources_file()
    local text_src
 
    case "${MULLE_SDE_CMAKE_SOURCES_FILE}" in
-      "DISABLED")
-         log_verbose "Source generation disabled by MULLE_SDE_CMAKE_SOURCES_FILE=DISABLED"
+      DISABLE*)
+         log_verbose "Source generation disabled by MULLE_SDE_CMAKE_SOURCES_FILE=DISABLE"
+         return
       ;;
 
-      "NONE")
+      NONE)
          text_src="# Source generation disabled by MULLE_SDE_CMAKE_SOURCES_FILE=NONE"
          MULLE_SDE_CMAKE_SOURCES_FILE=""
       ;;
@@ -234,7 +236,6 @@ create_sources_file()
             #
             text_src="message( FATAL_ERROR \" No sources found. \`mulle-sde environment set MULLE_SDE_CMAKE_SOURCES_FILE NONE\`, if this is intentional\")"
          fi
-
       ;;
    esac
 
@@ -351,6 +352,8 @@ main()
 
    MULLE_MATCH="${MULLE_MATCH:-`command -v mulle-match`}"
    [ -z "${MULLE_MATCH}" ] && fail "mulle-match not in PATH"
+
+   [ -z "${MULLE_VIRTUAL_ROOT}" ] && fail "Must run inside the mulle-sde environment"
 
    #
    # With 1000 header and 1000 source files, a full update takes ~7s on

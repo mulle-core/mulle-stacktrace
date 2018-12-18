@@ -1,12 +1,1 @@
 
-inotifywait
-ssh
-curl
-wget
-uuidgen
-cc
-clang
-gcc
-ld
-ninja
-make

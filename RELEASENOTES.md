@@ -1,3 +1,7 @@
+### 0.0.3
+
+* fix travis
+
 ### 0.0.2
 
 * Various small improvements

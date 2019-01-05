@@ -1,3 +1,7 @@
+### 0.0.4
+
+* modernized to mulle-sde with .mulle folder
+
 ### 0.0.3
 
 * fix travis

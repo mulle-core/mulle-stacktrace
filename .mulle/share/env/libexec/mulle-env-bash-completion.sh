@@ -80,7 +80,7 @@ _mulle_env_complete()
       tool)
          case "$prev" in
             remove)
-               list="`mulle-env -e tool list`"
+               list="`mulle-env tool list`"
                COMPREPLY=( $( compgen -W "${list}" -- "$cur" ) )
             ;;
 
@@ -98,7 +98,7 @@ _mulle_env_complete()
 
       environment)
          case "$prev" in
-            get|set)
+            get|remove|set)
                list="`mulle-env -s environment list | sed 's/^\([^=]*\).*/\1/'`"
                COMPREPLY=( $( compgen -W "${list}" -- "$cur" ) )
             ;;

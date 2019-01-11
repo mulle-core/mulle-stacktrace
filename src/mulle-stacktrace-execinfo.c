@@ -41,6 +41,7 @@
 #include <stdlib.h>
 #include <execinfo.h>
 
+#ifdef __APPLE__
 //
 // it gives 0   libMulleStandaloneObjC.dylib        0x000000010ab7e46d stacktrace + 61
 // move past the address
@@ -78,6 +79,53 @@ static int   trim_arse_fat( char *s)
    return( (int) (offset - s));
 }
 
+#else
+
+//
+// it gives /lib64/ld-linux-x86-64.so.2(+0x10ca) [0x7ffff7fd40ca]
+// or  /home/src/../libMulleObjC-standalone.so(_mulle_objc_universe_crunch+0x176) [0x7ffff7f6fa5c]
+static char   *trim_belly_fat( char *s)
+{
+   char   *hex;
+   char   *memo;
+
+   // if we have (+0x), then remove leading path but keep filename
+   hex = strstr( s, "(+0x");
+   if( hex)
+   {
+      memo = s;
+      while( s < hex)
+      {
+         s = strchr( s, '/');
+         if( ! s)
+            return( memo);
+         memo = ++s;
+      }
+      return( memo);
+   }
+   hex++;
+
+   // remove boring filename path
+   memo = s;
+   s = strchr( s, '(');
+   return( s ? s : memo);
+}
+
+
+static int   trim_arse_fat( char *s)
+{
+   char   *offset;
+
+   offset = strstr( s, " [0x");
+   if( ! offset)
+      return( (int) strlen( s));
+
+   return( (int) (offset - s));
+}
+
+#endif
+
+
 
 static char   *keep_belly_fat( char *s)
 {
@@ -90,21 +138,24 @@ static int   keep_arse_fat( char *s)
    return( (int) strlen( s));
 }
 
+#define stracktrace_has_prefix( s, prefix)   ! strncmp( s, prefix, sizeof( prefix) - 1)
 
 static int   trim_boring_functions( char *s, int size)
 {
    if( size == 3 && ! strncmp( s, "0x0", 3))
       return( 1);
 
-   if( ! strncmp( s, "test_calloc_or_raise", strlen( "test_calloc_or_raise")))
+   if( stracktrace_has_prefix( s, "test_calloc_or_raise"))
       return( 1);
-   if( ! strncmp( s, "test_realloc_or_raise", strlen( "test_realloc_or_raise")))
+   if( stracktrace_has_prefix( s, "test_realloc_or_raise"))
       return( 1);
-   if( ! strncmp( s, "test_realloc", strlen( "test_realloc")))
+   if( stracktrace_has_prefix( s, "test_realloc"))
       return( 1);
-   if( ! strncmp( s, "test_calloc", strlen( "test_calloc")))
+   if( stracktrace_has_prefix( s, "test_calloc"))
       return( 1);
-   if( ! strncmp( s, "test_free", strlen( "test_free")))
+   if( stracktrace_has_prefix( s, "test_free"))
+      return( 1);
+   if( stracktrace_has_prefix( s, "libmulle-testallocator"))
       return( 1);
 
    return( 0);

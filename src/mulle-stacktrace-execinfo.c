@@ -1,6 +1,6 @@
 //
-//  mulle_testallocator.c
-//  mulle-container
+//  mulle-stacktrace-execinfo.c
+//  mulle-core
 //
 //  Created by Nat! on 04.11.15.
 //  Copyright (c) 2015 Nat! - Mulle kybernetiK.
@@ -33,6 +33,8 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
+#define _GNU_SOURCE
+
 #include "mulle-stacktrace.h"
 
 #include <assert.h>
@@ -40,6 +42,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <execinfo.h>
+
+
+// clang speciality
+#ifdef __has_include
+# if __has_include( <dlfcn.h>)
+#  include <dlfcn.h>
+#  define HAVE_DLSYM  1
+# endif
+#endif
+
+
 
 #ifdef __APPLE__
 //
@@ -125,6 +138,10 @@ static int   trim_arse_fat( char *s)
 
 #endif
 
+static char  *symbolize_nothing( void *adresse, size_t max, char *buf, size_t len, void **userinfo)
+{
+   return( NULL);
+}
 
 
 static char   *keep_belly_fat( char *s)
@@ -137,6 +154,7 @@ static int   keep_arse_fat( char *s)
 {
    return( (int) strlen( s));
 }
+
 
 #define stracktrace_has_prefix( s, prefix)   ! strncmp( s, prefix, sizeof( prefix) - 1)
 
@@ -161,76 +179,213 @@ static int   trim_boring_functions( char *s, int size)
    return( 0);
 }
 
+
 static int   keep_boring_functions( char *s, int size)
 {
    return( 0);
 }
 
 
-void   _mulle_stacktrace( struct _mulle_stacktrace *stacktrace,
+static int   dump_less_shabby( struct mulle_stacktrace *stacktrace,
+                               char *s,
+                               FILE *fp,
+                               enum mulle_stacktrace_format format,
+                               char *delim)
+{
+   int   size;
+
+   if( format == mulle_stacktrace_normal)
+   {
+      fprintf( fp, "%s%s", delim, s);
+      return( 0);
+   }
+
+   s    = stacktrace->trim_belly_fat( s);
+   size = stacktrace->trim_arse_fat( s);
+
+   if( stacktrace->is_boring( s, size))
+      return( 1);
+   fprintf( fp, "%s%.*s", delim, size, s);
+   return( 0);
+}
+
+
+static void  shabby_default_dump( struct mulle_stacktrace *stacktrace,
+                                  void **callstack,
+                                  int frames,
+                                  int offset,
+                                  FILE *fp,
+                                  char *delimchar,
+                                  enum mulle_stacktrace_format format)
+{
+   char   **strs;
+   char   **p;
+   char   *delim;
+   char   **sentinel;
+   char   *s;
+   char   *symbolized;
+   int    size;
+
+   strs     = backtrace_symbols( callstack, frames);
+   p        = &strs[ frames];
+   sentinel = &strs[ offset];
+
+   delim = "";
+   while( p > sentinel)
+   {
+      s = *--p;
+      if( ! dump_less_shabby( stacktrace, s, fp, format, delim))
+         delim = delimchar;
+   }
+   free( strs);
+}
+
+
+
+#ifdef HAVE_DLSYM
+
+static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
+                                    void **callstack,
+                                    int frames,
+                                    int offset,
+                                    FILE *fp,
+                                    char *delimchar,
+                                    enum mulle_stacktrace_format format)
+{
+   char        *delim;
+   char        *s;
+   Dl_info     info;
+   int         size;
+   ptrdiff_t   diff;
+   size_t      max;
+   int         havedl;
+   void        **p;
+   void        **sentinel;
+   void        *address;
+   void        *userinfo;
+//   char        **strs;
+   char        buf[ 512];
+   int         i;
+
+   p        = &callstack[ frames];
+   sentinel = &callstack[ offset];
+
+   userinfo = NULL;
+   stacktrace->symbolize( NULL, 0, NULL, 0, &userinfo);
+
+   i = 0;
+   while( p > sentinel)
+   {
+      delim = (i == 0) ? "" : delimchar;
+      ++i;
+
+      address = *--p;
+      max     = 0x1000;
+      havedl  = dladdr( address, &info);
+      if( havedl)
+         max = (intptr_t) address - (intptr_t) info.dli_saddr;
+
+      // try to improve on max with symbolizer
+      if( max)
+      {
+         s = stacktrace->symbolize( address, max - 1, buf, sizeof( buf), &userinfo);
+         if( s)
+         {
+            fprintf( fp, "%s %s", delim, s);
+            continue;
+         }
+      }
+
+      if( havedl)
+      {
+         if( info.dli_sname)
+         {
+            diff = (intptr_t) address - (intptr_t) info.dli_saddr;
+            if( diff)
+               fprintf( fp, "%s %s+0x%0lx", delim, info.dli_sname, (long) diff);
+            else
+               fprintf( fp, "%s %s", delim, info.dli_sname);
+            continue;
+         }
+
+         if( info.dli_fname)
+         {
+            s = strrchr( info.dli_fname, '/');
+            if( s)
+               s = &s[ 1];
+            else
+               s = (char *) info.dli_fname;
+
+            // relative address of shared lib is not really useful
+            fprintf( fp, "%s %s:%p", delim, s, address);
+            continue;
+         }
+      }
+
+#if 0  // bringt nix, kann auch nicht mehr
+      strs = backtrace_symbols( p, 1);
+      dump_less_shabby( stacktrace, *strs, fp, format, delim);
+      free( strs);
+#endif
+      fprintf( fp, "%s %p", delim, address);
+   }
+   stacktrace->symbolize( NULL, (size_t) -1, NULL, 0, &userinfo);
+}
+
+#endif
+
+
+
+
+void   _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                           int offset,
                           enum mulle_stacktrace_format format,
                           FILE *fp)
 {
-   static struct _mulle_stacktrace   dummy =
+   static struct mulle_stacktrace   dummy =
    {
+      symbolize_nothing,
       trim_belly_fat,
       trim_arse_fat,
       trim_boring_functions
    };
+   char   *delimchar;
 
    if( ! stacktrace)
       stacktrace = &dummy;
    if( ! fp)
       fp = stderr;
 
-   fprintf( fp, " : [");
+   delimchar = "\n";
+   if( format != mulle_stacktrace_linefeed)
    {
-      void   *callstack[256];
+      fprintf( fp, " : [");
+      delimchar = " |";
+   }
+
+   {
+      void   *callstack[ 256];
       int    frames;
-      char   **strs;
-      char   **p;
-      char   **sentinel;
-      char   *delim;
-      char   *s;
-      int    size;
 
       frames   = backtrace( callstack, 256);
-      strs     = backtrace_symbols( callstack, frames);
-      p        = &strs[ frames];
-      sentinel = &strs[ offset];
-
-      delim = "";
-      while( p > sentinel)
-      {
-         s = *--p;
-         if( format == mulle_stacktrace_normal)
-         {
-            fprintf( fp, "%s%s", delim, s);
-            delim = "|";
-         }
-         else
-         {
-            s    = stacktrace->trim_belly_fat( s);
-            size = stacktrace->trim_arse_fat( s);
-            if( ! stacktrace->is_boring( s, size))
-            {
-               fprintf( fp, "%s%.*s", delim, size, s);
-               delim = "|";
-            }
-         }
-      }
-      free( strs);
+#ifdef HAVE_DLSYM
+      mulle_stacktrace_dump( stacktrace, callstack, frames, offset, fp, delimchar, format);
+#else
+      shabby_default_dump( stacktrace, callstack, frames, offset, fp, delimchar, format);
+#endif
    }
-   fputc( ']', fp);
+
+   fputc( (format == mulle_stacktrace_linefeed) ? '\n' : ']', fp);
 }
 
 
-void   _mulle_stacktrace_init( struct _mulle_stacktrace *stacktrace,
+void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
+                               mulle_stacktrace_symbolizer_t *p_symbolize,
                                char *(*p_trim_belly_fat)( char *),
                                int (*p_trim_arse_fat)( char *),
                                int (*p_is_boring)( char *, int size))
 {
+   stacktrace->symbolize      = p_symbolize ? p_symbolize : symbolize_nothing;
    stacktrace->trim_belly_fat = p_trim_belly_fat ? p_trim_belly_fat : keep_belly_fat;
    stacktrace->trim_arse_fat  = p_trim_arse_fat ? p_trim_arse_fat : keep_arse_fat;
    stacktrace->is_boring      = p_is_boring ? p_is_boring : keep_boring_functions;

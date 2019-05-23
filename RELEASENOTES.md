@@ -1,3 +1,9 @@
+## 0.1.0
+
+* allows augmentation of stacktrace with external symbolizer
+* added stacktraceformat with linefeed
+
+
 ### 0.0.4
 
 * modernized to mulle-sde with .mulle folder

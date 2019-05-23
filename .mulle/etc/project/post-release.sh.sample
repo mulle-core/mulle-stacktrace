@@ -6,3 +6,4 @@ post_release()
 {
    exekutor mulle-project-debian
 }
+

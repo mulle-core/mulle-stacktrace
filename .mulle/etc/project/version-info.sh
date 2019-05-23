@@ -5,11 +5,12 @@
 # no git operations.
 #
 
-# VERSIONFILE="mulle-stacktrace"
-# VERSIONNAME="MULLE_STACKTRACE_VERSION"
+# VERSIONFILE="<|PROJECT_NAME|>"
+# VERSIONNAME="<|PROJECT_UPCASE_IDENTIFIER|>_VERSION"
 
 #
 # Other files getting the version written into. Write only. Linefeed separated.
 #
+# VERSIONMIRRORNAME=MULLE_EXECUTABLE_VERSION # remove to just write as echo
 # VERSIONFILEMIRRORS="\
-#src/mulle-sde/mulle-stacktrace/version"
+#src/mulle-sde/<|PROJECT_NAME|>/version"

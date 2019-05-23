@@ -3,7 +3,6 @@ PUBLISHER_TAP="your_github_name/homebrew_repo"
 PUBLISHER_FULLNAME="You in detail"
 PUBLISHER_EMAIL="You <you@your.domain.tl>"
 PUBLISHER_DOMAIN="your.domain"
-# PUBLISHER_LOGO="small text file"
 
 #
 # derivable stuff for Debian

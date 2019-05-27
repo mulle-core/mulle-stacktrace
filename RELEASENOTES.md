@@ -1,3 +1,7 @@
+### 0.1.1
+
+* check for `__has_include` availability before using it
+
 ## 0.1.0
 
 * allows augmentation of stacktrace with external symbolizer

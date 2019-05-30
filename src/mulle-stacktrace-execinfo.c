@@ -280,10 +280,14 @@ static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
       ++i;
 
       address = *--p;
-      max     = 0x1000;
+      max     = 0x800;
       havedl  = dladdr( address, &info);
-      if( havedl)
+      if( havedl && info.dli_saddr)
+      {
          max = (intptr_t) address - (intptr_t) info.dli_saddr;
+         if( max > 0x800)
+            max = 0x800;
+      }
 
       // try to improve on max with symbolizer
       if( max)

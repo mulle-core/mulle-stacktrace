@@ -1,3 +1,7 @@
+### 0.1.2
+
+* improved symbolification of stacktrace
+
 ### 0.1.1
 
 * check for `__has_include` availability before using it

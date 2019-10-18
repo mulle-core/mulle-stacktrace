@@ -1,3 +1,7 @@
+### 0.1.3
+
+* updated mulle-sde and travis
+
 ### 0.1.2
 
 * improved symbolification of stacktrace

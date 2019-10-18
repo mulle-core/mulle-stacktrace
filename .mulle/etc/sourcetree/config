@@ -1,2 +1,1 @@
-dlfcn;none;no-all-load,no-build,no-cmakeinherit,no-delete,no-dependency,no-fs,no-import,no-public,no-require,no-update,only-os-mingw;491a9879-d8f8-439d-969c-6dfba202b0f0;;;;;aliases=dl,dlfcn
-dl;none;no-all-load,no-build,no-cmakeinherit,no-delete,no-dependency,no-fs,no-import,no-os-mingw,no-public,no-require,no-update;2d792789-7fc7-424a-9732-67920aa7aeb8;;;;;base64:YWxpYXNlcz1kbCxkbGZjbgppbmNsdWRlPWRsZmNuLmgK
+mulle-dlfcn;${MULLE_DLFCN_NODETYPE:-tar};no-all-load,no-import,no-singlephase;fcecbe5b-1814-496a-876a-722b695e2fdd;${MULLE_DLFCN_URL:-https://github.com/mulle-core/mulle-dlfcn/archive/${MULLE_BRANCH}.tar.gz};${MULLE_DLFCN_BRANCH:-latest};;;

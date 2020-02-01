@@ -33,6 +33,8 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
+#ifndef _WIN32
+
 #define _GNU_SOURCE
 
 #include "mulle-stacktrace.h"
@@ -394,3 +396,5 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
    stacktrace->trim_arse_fat  = p_trim_arse_fat ? p_trim_arse_fat : keep_arse_fat;
    stacktrace->is_boring      = p_is_boring ? p_is_boring : keep_boring_functions;
 }
+
+#endif

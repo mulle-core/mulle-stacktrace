@@ -341,8 +341,6 @@ static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
 #endif
 
 
-
-
 void   _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                           int offset,
                           enum mulle_stacktrace_format format,
@@ -382,6 +380,16 @@ void   _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
    }
 
    fputc( (format == mulle_stacktrace_linefeed) ? '\n' : ']', fp);
+}
+
+
+int   mulle_stacktrace_count_frames( void)
+{
+   void   *callstack[ 256];
+   int    frames;
+
+   frames = backtrace( callstack, 256);
+   return( frames);
 }
 
 

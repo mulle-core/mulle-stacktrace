@@ -10,7 +10,7 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                int (*trim_arse_fat)( char *),
                                int (*is_boring)( char *, int size))
 {
-	// does nothing 
+	// does nothing
 }
 
 // stacktrace may be NULL
@@ -22,5 +22,9 @@ void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
 	// does absolutely nothing
 }
 
+int   mulle_stacktrace_count_frames( void)
+{
+   return( 0);
+}
 
 #endif

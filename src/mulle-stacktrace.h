@@ -118,3 +118,6 @@ static inline void   mulle_stacktrace_once( FILE *fp)
 {
    _mulle_stacktrace( NULL, 1, mulle_stacktrace_normal, fp);
 }
+
+
+int   mulle_stacktrace_count_frames( void);

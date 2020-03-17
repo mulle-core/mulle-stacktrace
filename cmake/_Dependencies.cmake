@@ -19,7 +19,7 @@ if( NOT MULLE_DLFCN_LIBRARY)
    #
    if( MULLE_DLFCN_LIBRARY)
       #
-      # Add to MULLE_DLFCN_LIBRARY list.
+      # Add to MULLE_DLFCN_LIBRARY to DEPENDENCY_LIBRARIES list.
       # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmakeadd`
       #
       set( DEPENDENCY_LIBRARIES

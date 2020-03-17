@@ -1,3 +1,4 @@
+# Fill it with mulle-env envirionment --scope  set <key> <value>
 #
 # mulle-dlfcn nodetype: ${MULLE_DLFCN_NODETYPE:-tar}
 #

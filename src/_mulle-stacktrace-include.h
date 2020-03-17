@@ -9,8 +9,8 @@
 *         set MULLE_SOURCETREE_TO_C_RUN DISABLE
 */
 
-#ifndef _mulle-stacktrace_include_h__
-#define _mulle-stacktrace_include_h__
+#ifndef _mulle_stacktrace_include_h__
+#define _mulle_stacktrace_include_h__
 
 // How to tweak the following mulle-dlfcn #include
 //    remove:          `mulle-sourcetree mark mulle-dlfcn no-header`

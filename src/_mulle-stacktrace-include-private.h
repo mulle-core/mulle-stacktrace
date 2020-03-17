@@ -9,8 +9,8 @@
 *         set MULLE_SOURCETREE_TO_C_RUN DISABLE
 */
 
-#ifndef _mulle-stacktrace_include_private_h__
-#define _mulle-stacktrace_include_private_h__
+#ifndef _mulle_stacktrace_include_private_h__
+#define _mulle_stacktrace_include_private_h__
 
 /* no headers */
 

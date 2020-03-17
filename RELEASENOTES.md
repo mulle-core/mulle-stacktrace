@@ -1,3 +1,8 @@
+## 0.2.0
+
+* added ``mulle_stacktrace_count_frames``
+
+
 ### 0.1.3
 
 * updated mulle-sde and travis

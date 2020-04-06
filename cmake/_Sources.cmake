@@ -8,6 +8,9 @@ endif()
 set( SOURCES
 src/mulle-stacktrace.c
 src/mulle-stacktrace-execinfo.c
-src/mulle-stacktrace-standalone.c
 src/mulle-stacktrace-windows.c
+)
+
+set( STANDALONE_SOURCES
+src/mulle-stacktrace-standalone.c
 )

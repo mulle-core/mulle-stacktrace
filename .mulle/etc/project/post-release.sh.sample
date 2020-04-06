@@ -5,6 +5,6 @@
 post_release()
 {
    # as technical flags like -n are sent over, rexekutor is fine
-   rrexekutor mulle-project-debian "$@"
+   rexekutor mulle-project-debian "$@"
 }
 

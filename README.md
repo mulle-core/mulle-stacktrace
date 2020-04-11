@@ -20,7 +20,6 @@ Use [mulle-sde](//github.com/mulle-sde) to add mulle-stacktrace to your project:
 mulle-sde dependency add --c --github mulle-core mulle-stacktrace
 ```
 
-
 ## Install
 
 ### mulle-sde
@@ -54,7 +53,6 @@ mkdir build 2> /dev/null
    make install
 )
 ```
-
 
 
 ## Author

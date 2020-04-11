@@ -32,7 +32,7 @@ mulle-sde install --prefix /usr/local \
    https://github.com/mulle-core/mulle-stacktrace/archive/latest.tar.gz
 ```
 
-## Manual Installation
+### Manual Installation
 
 
 Install the requirements:

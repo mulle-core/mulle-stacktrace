@@ -1,3 +1,7 @@
+### 0.2.1
+
+* new mulle-sde project structure
+
 ## 0.2.0
 
 * added ``mulle_stacktrace_count_frames``

@@ -1,23 +1,23 @@
 # mulle-stacktrace
 
-👣 Stracktrace support for various OS
+#### 👣 Stracktrace support for various OS
 
 The idea here is to have a unified library for stacktraces.
 This currently just uses `<execinfo.h>`. It will need more
 code to support windows.
 
 
-Build Status | Release Version
--------------|-----------------------------------
-[![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg) [![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace)
+| Release Version
+|-----------------------------------
+[![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace)
 
 
-## Add 
+## Add
 
 Use [mulle-sde](//github.com/mulle-sde) to add mulle-stacktrace to your project:
 
 ```
-mulle-sde dependency add --c --github mulle-core mulle-stacktrace
+mulle-sde dependency add --c --marks no-actual-link --github mulle-core mulle-stacktrace
 ```
 
 ## Install

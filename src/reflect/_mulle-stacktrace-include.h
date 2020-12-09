@@ -12,13 +12,6 @@
 #ifndef _mulle_stacktrace_include_h__
 #define _mulle_stacktrace_include_h__
 
-// How to tweak the following mulle-dlfcn #include
-//    remove:          `mulle-sourcetree mark mulle-dlfcn no-header`
-//    rename:          `mulle-sourcetree mark mulle-dlfcn set include whatever.h`
-//    toggle #import:  `mulle-sourcetree mark mulle-dlfcn [no-]import`
-//    toggle public:   `mulle-sourcetree mark mulle-dlfcn [no-]public`
-//    toggle optional: `mulle-sourcetree mark mulle-dlfcn [no-]require`
-//    remove for os:   `mulle-sourcetree mark mulle-dlfcn no-os-<osname>`
-# include <mulle-dlfcn/mulle-dlfcn.h>   // mulle-dlfcn
+/* no headers */
 
 #endif

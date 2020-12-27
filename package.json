@@ -1,0 +1,16 @@
+{
+   "name" : "mulle-stacktrace",
+   "version" : "0.2.2",
+   "description" : "👣 Stracktrace support for various OS",
+   "homepage" : "https://github.com/mulle-core/mulle-stacktrace",
+   "bugs" : "https://github.com/mulle-core/mulle-stacktrace/issues",
+   "keywords" : [],
+   "license" : "UNLICENSED",
+   "repository" : {
+      "type" : "git",
+      "url" : "mulle-core/mulle-stacktrace"
+   },
+   "dependencies" : {
+      "mulle-dlfcn" : "mulle-core/mulle-dlfcn"
+   }
+}

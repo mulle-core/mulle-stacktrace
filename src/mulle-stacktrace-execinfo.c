@@ -181,7 +181,7 @@ static int   trim_boring_functions( char *s, int size)
    if( stracktrace_has_prefix( s, "libmulle-testallocator"))
       return( 1);
 
-   // 
+   //
    if( stracktrace_has_prefix( s, "mulle_objc"))
       return( 1);
    if( stracktrace_has_prefix( s, "_mulle_objc"))
@@ -255,6 +255,15 @@ static void  shabby_default_dump( struct mulle_stacktrace *stacktrace,
 
 #ifdef HAVE_DLSYM
 
+static struct mulle_stacktrace   dummy =
+{
+   symbolize_nothing,
+   trim_belly_fat,
+   trim_arse_fat,
+   trim_boring_functions
+};
+
+
 static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
                                     void **callstack,
                                     int frames,
@@ -277,6 +286,10 @@ static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
 //   char        **strs;
    char        buf[ 512];
    int         i;
+
+   // non underscore shouldn't crash for NULL params
+   if( ! stacktrace || ! callstack || ! fp || ! delimchar)
+      return;
 
    p        = &callstack[ frames];
    sentinel = &callstack[ offset];
@@ -359,13 +372,6 @@ void   _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                           enum mulle_stacktrace_format format,
                           FILE *fp)
 {
-   static struct mulle_stacktrace   dummy =
-   {
-      symbolize_nothing,
-      trim_belly_fat,
-      trim_arse_fat,
-      trim_boring_functions
-   };
    char   *delimchar;
 
    if( ! stacktrace)

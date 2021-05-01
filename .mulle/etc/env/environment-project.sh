@@ -7,19 +7,19 @@ export PROJECT_NAME="mulle-stacktrace"
 #
 #
 #
-export PROJECT_IDENTIFIER="mulle_stacktrace"
 
-
-#
-#
-#
-export PROJECT_DOWNCASE_IDENTIFIER="mulle_stacktrace"
 
 
 #
 #
 #
-export PROJECT_UPCASE_IDENTIFIER="MULLE_STACKTRACE"
+
+
+
+#
+#
+#
+
 
 
 #

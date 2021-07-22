@@ -15,7 +15,7 @@ endif()
 #
 # Generated from sourcetree: 66937571-7F4E-4593-9167-3D82BB17CF84;mulle-dlfcn;no-actual-link,no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;
 # Disable with : `mulle-sourcetree mark mulle-dlfcn no-header`
-# Disable for this platform: `mulle-sourcetree mark mulle-dlfcn no-cmake-platform-linux`
+# Disable for this platform: `mulle-sourcetree mark mulle-dlfcn no-cmake-platform-darwin`
 #
 if( NOT MULLE_DLFCN_HEADER)
    find_file( MULLE_DLFCN_HEADER NAMES mulle-dlfcn.h mulle-dlfcn/mulle-dlfcn.h)

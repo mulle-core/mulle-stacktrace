@@ -264,13 +264,13 @@ static struct mulle_stacktrace   dummy =
 };
 
 
-static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
-                                    void **callstack,
-                                    int frames,
-                                    int offset,
-                                    FILE *fp,
-                                    char *delimchar,
-                                    enum mulle_stacktrace_format format)
+static void   mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
+                                     void **callstack,
+                                     int frames,
+                                     int offset,
+                                     FILE *fp,
+                                     char *delimchar,
+                                     enum mulle_stacktrace_format format)
 {
    char        *delim;
    char        *s;
@@ -305,6 +305,7 @@ static void  mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
 
       address = *--p;
       max     = 0x800;
+      //musl doesn't have  it ?
       havedl  = dladdr( address, &info);
       if( havedl && info.dli_saddr)
       {

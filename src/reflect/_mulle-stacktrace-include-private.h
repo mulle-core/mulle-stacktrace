@@ -16,14 +16,14 @@
 
 // You can tweak the following #include with these commands.
 // (Use 66937571-7F4E-4593-9167-3D82BB17CF84 instead of mulle-dlfcn if there are duplicate entries)
-//    remove:             `mulle-sourcetree mark mulle-dlfcn no-header`
+//    remove:             `mulle-sde dependency mark mulle-dlfcn no-header`
 //    rename:             `mulle-sde dependency|library set mulle-dlfcn include whatever.h`
-//    reorder:            `mulle-sourcetree move mulle-dlfcn <up|down>`
-//    toggle #include:    `mulle-sourcetree mark mulle-dlfcn [no-]import`
-//    toggle public:      `mulle-sourcetree mark mulle-dlfcn [no-]public`
-//    toggle optional:    `mulle-sourcetree mark mulle-dlfcn [no-]require`
-//    remove for platform:`mulle-sourcetree mark mulle-dlfcn no-platform-<uname>`
-//        (use mulle-sourcetree-to-c --unames for known values)
+//    reorder:            `mulle-sde dependency move mulle-dlfcn <up|down>`
+//    toggle #include:    `mulle-sde dependency mark mulle-dlfcn [no-]import`
+//    toggle public:      `mulle-sde dependency mark mulle-dlfcn [no-]public`
+//    toggle optional:    `mulle-sde dependency mark mulle-dlfcn [no-]require`
+//    remove for platform:`mulle-sde dependency mark mulle-dlfcn no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
 #include <mulle-dlfcn/mulle-dlfcn.h>   // mulle-dlfcn
 
 #endif

@@ -12,37 +12,41 @@ if( MULLE_TRACE_INCLUDE)
 endif()
 
 #
-# Generated from sourcetree: 66937571-7F4E-4593-9167-3D82BB17CF84;mulle-dlfcn;no-actual-link,no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;
-# Disable with : `mulle-sourcetree mark mulle-dlfcn no-header`
-# Disable for this platform: `mulle-sourcetree mark mulle-dlfcn no-cmake-platform-darwin`
+# Generated from sourcetree: 66937571-7F4E-4593-9167-3D82BB17CF84;mulle-dlfcn;no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;
+# Disable with : `mulle-sourcetree mark mulle-dlfcn no-link`
+# Disable for this platform: `mulle-sourcetree mark mulle-dlfcn no-cmake-platform-windows`
 #
-if( NOT MULLE_DLFCN_HEADER)
-   find_file( MULLE_DLFCN_HEADER NAMES mulle-dlfcn.h mulle-dlfcn/mulle-dlfcn.h)
-   message( STATUS "MULLE_DLFCN_HEADER is ${MULLE_DLFCN_HEADER}")
-
+if( NOT MULLE_DLFCN_LIBRARY)
+   find_library( MULLE_DLFCN_LIBRARY NAMES ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_STATIC_LIBRARY_SUFFIX} mulle-dlfcn NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH)
+   message( STATUS "MULLE_DLFCN_LIBRARY is ${MULLE_DLFCN_LIBRARY}")
    #
-   # Add MULLE_DLFCN_HEADER to HEADER_ONLY_LIBRARIES list.
-   # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-add`
+   # The order looks ascending, but due to the way this file is read
+   # it ends up being descending, which is what we need.
    #
-   set( HEADER_ONLY_LIBRARIES
-      ${MULLE_DLFCN_HEADER}
-      ${HEADER_ONLY_LIBRARIES}
-      CACHE INTERNAL "need to cache this"
-   )
-   if( MULLE_DLFCN_HEADER)
+   if( MULLE_DLFCN_LIBRARY)
       #
-      # Inherit ObjC loader and link dependency info.
+      # Add MULLE_DLFCN_LIBRARY to DEPENDENCY_LIBRARIES list.
+      # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-add`
+      #
+      set( DEPENDENCY_LIBRARIES
+         ${DEPENDENCY_LIBRARIES}
+         ${MULLE_DLFCN_LIBRARY}
+         CACHE INTERNAL "need to cache this"
+      )
+      #
+      # Inherit information from dependency.
+      # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
       # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-inherit`
       #
-      get_filename_component( _TMP_MULLE_DLFCN_ROOT "${MULLE_DLFCN_HEADER}" DIRECTORY)
-      get_filename_component( _TMP_MULLE_DLFCN_NAME "${_TMP_MULLE_DLFCN_ROOT}" NAME)
+      # temporarily expand CMAKE_MODULE_PATH
+      get_filename_component( _TMP_MULLE_DLFCN_ROOT "${MULLE_DLFCN_LIBRARY}" DIRECTORY)
       get_filename_component( _TMP_MULLE_DLFCN_ROOT "${_TMP_MULLE_DLFCN_ROOT}" DIRECTORY)
-      get_filename_component( _TMP_MULLE_DLFCN_ROOT "${_TMP_MULLE_DLFCN_ROOT}" DIRECTORY)
+      #
       #
       # Search for "DependenciesAndLibraries.cmake" to include.
       # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-dependency`
       #
-      foreach( _TMP_MULLE_DLFCN_NAME IN LISTS _TMP_MULLE_DLFCN_NAME)
+      foreach( _TMP_MULLE_DLFCN_NAME "mulle-dlfcn")
          set( _TMP_MULLE_DLFCN_DIR "${_TMP_MULLE_DLFCN_ROOT}/include/${_TMP_MULLE_DLFCN_NAME}/cmake")
          # use explicit path to avoid "surprises"
          if( EXISTS "${_TMP_MULLE_DLFCN_DIR}/DependenciesAndLibraries.cmake")
@@ -72,7 +76,7 @@ if( NOT MULLE_DLFCN_HEADER)
          endif()
       endforeach()
    else()
-      # Disable with: `mulle-sourcetree mark mulle-dlfcn no-require`
-      message( FATAL_ERROR "MULLE_DLFCN_HEADER was not found")
+      # Disable with: `mulle-sourcetree mark mulle-dlfcn no-require-link`
+      message( FATAL_ERROR "MULLE_DLFCN_LIBRARY was not found")
    endif()
 endif()

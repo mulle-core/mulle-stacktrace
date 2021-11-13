@@ -22,6 +22,13 @@ void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
 	// does absolutely nothing
 }
 
+
+void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace)
+{
+  // does absolutely nothing
+}
+
+
 int   mulle_stacktrace_count_frames( void)
 {
    return( 0);

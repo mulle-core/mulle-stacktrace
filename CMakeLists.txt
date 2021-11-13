@@ -2,6 +2,7 @@ cmake_minimum_required( VERSION 3.1)
 
 project( mulle-stacktrace C)
 
+add_definitions( -DMULLE_STACKTRACE_EXTERN_GLOBAL=extern)
 
 ### mulle-sde environment
 

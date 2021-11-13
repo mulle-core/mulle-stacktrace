@@ -29,6 +29,11 @@
 
 #include "_mulle-stacktrace-include.h"
 
+
+#ifndef MULLE_STACKTRACE_EXTERN_GLOBAL
+# define MULLE_STACKTRACE_EXTERN_GLOBAL MULLE_C_EXTERN_GLOBAL
+#endif
+
 /* You can add some more include statements here */
 
 #endif

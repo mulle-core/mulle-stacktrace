@@ -39,6 +39,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
+
 /*
  *  (c) 2018 nat
  *
@@ -88,6 +89,7 @@ struct mulle_stacktrace
 };
 
 
+MULLE_STACKTRACE_EXTERN_GLOBAL
 void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                mulle_stacktrace_symbolizer_t *symbolize,
                                char *(*trim_belly_fat)( char *),
@@ -95,6 +97,7 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                int (*is_boring)( char *, int size));
 
 // what is used if NULL is passed for stacktrace
+MULLE_STACKTRACE_EXTERN_GLOBAL
 void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace);
 
 enum mulle_stacktrace_format
@@ -105,6 +108,7 @@ enum mulle_stacktrace_format
 };
 
 // stacktrace may be NULL
+MULLE_STACKTRACE_EXTERN_GLOBAL
 void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                          int offset,
                          enum mulle_stacktrace_format format,

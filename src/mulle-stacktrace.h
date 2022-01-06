@@ -65,8 +65,8 @@ static inline unsigned int   mulle_stacktrace_get_version_patch( void)
    return( MULLE_STACKTRACE_VERSION & 0xFF);
 }
 
-
-extern uint32_t   mulle_stacktrace_get_version( void);
+MULLE_STACKTRACE_EXTERN_GLOBAL
+uint32_t   mulle_stacktrace_get_version( void);
 
 /*
    Add other library headers here like so, for exposure to library

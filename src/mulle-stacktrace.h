@@ -33,6 +33,11 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
+
+#ifndef mulle_stacktrace_h__
+#define mulle_stacktrace_h__
+
+
 #include "include.h"
 
 #include <stdint.h>
@@ -45,7 +50,7 @@
  *
  *  version:  major, minor, patch
  */
-#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (2 << 8) | 3)
+#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (2 << 8) | 4)
 
 
 static inline unsigned int   mulle_stacktrace_get_version_major( void)
@@ -128,3 +133,12 @@ static inline void   mulle_stacktrace_once( FILE *fp)
 
 
 int   mulle_stacktrace_count_frames( void);
+
+
+#ifdef __has_include
+# if __has_include( "_mulle-stacktrace-versioncheck.h")
+#  include "_mulle-stacktrace-versioncheck.h"
+# endif
+#endif
+
+#endif

@@ -3,13 +3,18 @@
 #### 👣 Stracktrace support for various OS
 
 The idea here is to have a unified library for stacktraces.
-This currently just uses `<execinfo.h>`. It will need more
-code to support windows.
+This currently just uses `<execinfo.h>`. It will need more code to support
+windows. This is not doing much at the moment and not doing it very well.
 
 
 | Release Version
 |-----------------------------------
 [![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace)
+
+
+### You are here
+
+![Overview](overview.dot.svg)
 
 
 ## Add

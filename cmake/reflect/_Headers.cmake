@@ -34,6 +34,7 @@ src/include-private.h
 #
 set( PUBLIC_GENERATED_HEADERS
 src/reflect/_mulle-stacktrace-include.h
+src/reflect/_mulle-stacktrace-versioncheck.h
 )
 
 #

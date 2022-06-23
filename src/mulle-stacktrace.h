@@ -50,7 +50,7 @@
  *
  *  version:  major, minor, patch
  */
-#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (2 << 8) | 4)
+#define MULLE_STACKTRACE_VERSION  ((0 << 20) | (2 << 8) | 5)
 
 
 static inline unsigned int   mulle_stacktrace_get_version_major( void)
@@ -70,7 +70,7 @@ static inline unsigned int   mulle_stacktrace_get_version_patch( void)
    return( MULLE_STACKTRACE_VERSION & 0xFF);
 }
 
-MULLE_STACKTRACE_EXTERN_GLOBAL
+MULLE_STACKTRACE_GLOBAL
 uint32_t   mulle_stacktrace_get_version( void);
 
 /*
@@ -94,7 +94,7 @@ struct mulle_stacktrace
 };
 
 
-MULLE_STACKTRACE_EXTERN_GLOBAL
+MULLE_STACKTRACE_GLOBAL
 void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                mulle_stacktrace_symbolizer_t *symbolize,
                                char *(*trim_belly_fat)( char *),
@@ -102,7 +102,7 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                int (*is_boring)( char *, int size));
 
 // what is used if NULL is passed for stacktrace
-MULLE_STACKTRACE_EXTERN_GLOBAL
+MULLE_STACKTRACE_GLOBAL
 void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace);
 
 enum mulle_stacktrace_format
@@ -113,7 +113,7 @@ enum mulle_stacktrace_format
 };
 
 // stacktrace may be NULL
-MULLE_STACKTRACE_EXTERN_GLOBAL
+MULLE_STACKTRACE_GLOBAL
 void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                          int offset,
                          enum mulle_stacktrace_format format,

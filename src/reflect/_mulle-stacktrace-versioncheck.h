@@ -3,7 +3,7 @@
  *   Any edits will be lost.
  */
 #if defined( MULLE_DLFCN_VERSION)
-# if MULLE_DLFCN_VERSION < ((0 << 20) | (0 << 8) | 8)
+# if MULLE_DLFCN_VERSION < ((0 << 20) | (0 << 8) | 9)
 #  error "mulle-dlfcn is too old"
 # endif
 # if MULLE_DLFCN_VERSION >= ((0 << 20) | (1 << 8) | 0)

@@ -9,7 +9,7 @@ windows. This is not doing much at the moment and not doing it very well.
 
 | Release Version
 |-----------------------------------
-[![Build Status](//github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](//img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](//github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)
+[![Build Status](https://github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)
 
 
 ### You are here

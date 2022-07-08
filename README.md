@@ -9,7 +9,7 @@ windows. This is not doing much at the moment and not doing it very well.
 
 | Release Version
 |-----------------------------------
-[![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://travis-ci.org/mulle-core/mulle-stacktrace.svg?branch=release)](https://travis-ci.org/mulle-core/mulle-stacktrace)
+[![Build Status](//github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](//img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](//github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)
 
 
 ### You are here
@@ -33,7 +33,7 @@ Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-stacktrace an
 
 ```
 mulle-sde install --prefix /usr/local \
-   https://github.com/mulle-core/mulle-stacktrace/archive/latest.tar.gz
+   //github.com/mulle-core/mulle-stacktrace/archive/latest.tar.gz
 ```
 
 ### Manual Installation

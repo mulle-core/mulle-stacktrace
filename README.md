@@ -9,8 +9,7 @@ windows. This is not doing much at the moment and not doing it very well.
 
 | Release Version
 |-----------------------------------
-[![Build Status](https://github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace) | ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://github.com/mulle-core/mulle-stacktrace/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)
-
+| [![Build Status](https://github.com/mulle-core/mulle-stacktrace/workflows/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)  ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace/workflows/CI/badge.svg?branch=release)
 
 ### You are here
 
@@ -21,7 +20,7 @@ windows. This is not doing much at the moment and not doing it very well.
 
 Use [mulle-sde](//github.com/mulle-sde) to add mulle-stacktrace to your project:
 
-```
+``` sh
 mulle-sde dependency add --c --marks no-actual-link --github mulle-core mulle-stacktrace
 ```
 
@@ -31,7 +30,7 @@ mulle-sde dependency add --c --marks no-actual-link --github mulle-core mulle-st
 
 Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-stacktrace and all dependencies:
 
-```
+``` sh
 mulle-sde install --prefix /usr/local \
    //github.com/mulle-core/mulle-stacktrace/archive/latest.tar.gz
 ```
@@ -48,7 +47,7 @@ Requirements                                                 | Description
 
 Install into `/usr/local`:
 
-```
+``` sh
 mkdir build 2> /dev/null
 (
    cd build ;

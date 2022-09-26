@@ -197,6 +197,8 @@ static int   keep_boring_functions( char *s, int size)
 }
 
 
+#ifndef HAVE_DLSYM
+
 static int   dump_less_shabby( struct mulle_stacktrace *stacktrace,
                                char *s,
                                FILE *fp,
@@ -222,6 +224,7 @@ static int   dump_less_shabby( struct mulle_stacktrace *stacktrace,
 }
 
 
+
 static void  shabby_default_dump( struct mulle_stacktrace *stacktrace,
                                   void **callstack,
                                   int frames,
@@ -235,8 +238,6 @@ static void  shabby_default_dump( struct mulle_stacktrace *stacktrace,
    char   *delim;
    char   **sentinel;
    char   *s;
-   char   *symbolized;
-   int    size;
 
    strs     = backtrace_symbols( callstack, frames);
    p        = &strs[ frames];
@@ -252,8 +253,7 @@ static void  shabby_default_dump( struct mulle_stacktrace *stacktrace,
    free( strs);
 }
 
-
-#ifdef HAVE_DLSYM
+#else
 
 static struct mulle_stacktrace   dummy =
 {
@@ -275,7 +275,6 @@ static void   mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
    char        *delim;
    char        *s;
    Dl_info     info;
-   int         size;
    ptrdiff_t   diff;
    size_t      max;
    int         havedl;

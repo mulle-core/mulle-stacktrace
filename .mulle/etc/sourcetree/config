@@ -1,1 +1,1 @@
-mulle-dlfcn;${MULLE_DLFCN_NODETYPE:-tar};no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;66937571-7F4E-4593-9167-3D82BB17CF84;${MULLE_DLFCN_URL:-https://github.com/mulle-core/mulle-dlfcn/archive/${MULLE_TAG}.tar.gz};${MULLE_DLFCN_BRANCH};${MULLE_DLFCN_TAG:-latest};;
+mulle-dlfcn;${MULLE__DLFCN_NODETYPE:-tar};no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;66937571-7F4E-4593-9167-3D82BB17CF84;${MULLE_DLFCN_URL:-https://github.com/mulle-core/mulle-dlfcn/archive/${MULLE_TAG}.tar.gz};${MULLE__DLFCN_BRANCH};${MULLE__DLFCN_TAG:-latest};;

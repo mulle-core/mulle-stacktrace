@@ -1,6 +1,6 @@
 {
    "name" : "mulle-stacktrace",
-   "version" : "0.2.2",
+   "version" : "0.2.6",
    "description" : "👣 Stracktrace support for various OS",
    "homepage" : "https://github.com/mulle-core/mulle-stacktrace",
    "bugs" : "https://github.com/mulle-core/mulle-stacktrace/issues",
@@ -11,6 +11,8 @@
       "url" : "mulle-core/mulle-stacktrace"
    },
    "dependencies" : {
-      "mulle-dlfcn" : "mulle-core/mulle-dlfcn"
+      "mulle-dlfcn" : "git://github.com/mulle-core/mulle-dlfcn",
+      "mulle-c11" : "git://github.com/mulle-c/mulle-c11",
+      "dlfcn-win32" : "git://github.com/mulle-core/dlfcn-win32"
    }
 }

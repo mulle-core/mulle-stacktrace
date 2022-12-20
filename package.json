@@ -8,7 +8,7 @@
    "license" : "UNLICENSED",
    "repository" : {
       "type" : "git",
-      "url" : "mulle-core/mulle-stacktrace"
+      "url" : "github:mulle-core/mulle-stacktrace"
    },
    "dependencies" : {
       "mulle-dlfcn" : "git://github.com/mulle-core/mulle-dlfcn",

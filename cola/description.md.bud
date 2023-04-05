@@ -1,0 +1,4 @@
+The idea here is to have a unified library for stacktraces.
+This currently just uses `<execinfo.h>`. It will need more code to support
+windows. This is not doing much at the moment and not doing it very well.
+

@@ -7,13 +7,14 @@ This currently just uses `<execinfo.h>`. It will need more code to support
 windows. This is not doing much at the moment and not doing it very well.
 
 
-| Release Version
-|-----------------------------------
-| [![Build Status](https://github.com/mulle-core/mulle-stacktrace/workflows/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace)  ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace/workflows/CI/badge.svg?branch=release)
+| Release Version                                       | Release Notes
+|-------------------------------------------------------|--------------
+| ![Mulle kybernetiK tag](https://img.shields.io/github/tag/mulle-core/mulle-stacktrace.svg?branch=release) [![Build Status](https://github.com/mulle-core/mulle-stacktrace/workflows/CI/badge.svg?branch=release)](//github.com/mulle-core/mulle-stacktrace/actions)| [RELEASENOTES](RELEASENOTES.md) |
 
-### You are here
 
-![Overview](overview.dot.svg)
+
+
+
 
 
 ## Add
@@ -21,12 +22,23 @@ windows. This is not doing much at the moment and not doing it very well.
 Use [mulle-sde](//github.com/mulle-sde) to add mulle-stacktrace to your project:
 
 ``` sh
-mulle-sde dependency add --c --marks no-actual-link --github mulle-core mulle-stacktrace
+mulle-sde add github:mulle-core/mulle-stacktrace
 ```
+
+To only add the sources of mulle-stacktrace with dependency
+sources use [clib](https://github.com/clibs/clib):
+
+
+``` sh
+clib install --out src/mulle-core mulle-core/mulle-stacktrace
+```
+
+Add `-isystem src/mulle-core` to your `CFLAGS` and compile all the sources that were downloaded with your project.
+
 
 ## Install
 
-### mulle-sde
+### Install with mulle-sde
 
 Use [mulle-sde](//github.com/mulle-sde) to build and install mulle-stacktrace and all dependencies:
 
@@ -37,15 +49,13 @@ mulle-sde install --prefix /usr/local \
 
 ### Manual Installation
 
-
 Install the requirements:
 
-Requirements                                                 | Description
--------------------------------------------------------------|-----------------------
-[mulle-dlfcn](//github.com/mulle-core/mulle-atexit)          | Cross-platform dlfcn support
+| Requirements                                 | Description
+|----------------------------------------------|-----------------------
+| [mulle-dlfcn](https://github.com/mulle-core/mulle-dlfcn)             | ♿️ Shared library helper
 
-
-Install into `/usr/local`:
+Install **mulle-stacktrace** into `/usr/local` with [cmake](https://cmake.org):
 
 ``` sh
 cmake -B build \
@@ -56,9 +66,8 @@ cmake --build build --config Release &&
 cmake --install build --config Release
 ```
 
-
 ## Author
 
-[Nat!](//www.mulle-kybernetik.com/weblog) for
-[Mulle kybernetiK](//www.mulle-kybernetik.com) and
-[Codeon GmbH](//www.codeon.de)
+[Nat!](https://mulle-kybernetik.com/weblog) for Mulle kybernetiK
+
+

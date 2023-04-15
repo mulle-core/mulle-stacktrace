@@ -1,0 +1,23 @@
+{
+   project =
+   {
+      description="👣 Stracktrace support for various OS";
+      domain="github";
+      name="mulle-stacktrace";
+      user="mulle-core";
+      repo="mulle-stacktrace";
+      homepage="https://github.com/mulle-core/mulle-stacktrace";
+      license="BSD-3-Clause"
+   };
+   dependencies =
+   (
+      {
+         description="♿️ Shared library helper";
+         domain="github";
+         name="mulle-dlfcn";
+         repo="mulle-dlfcn";
+         url="https://github.com/mulle-core/mulle-dlfcn";
+         user="mulle-core";
+      }
+   )
+}

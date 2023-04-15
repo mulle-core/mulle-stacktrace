@@ -16,10 +16,13 @@
 <text text-anchor="middle" x="105" y="-158.3" font-family="Times,serif" font-size="14.00">mulle&#45;stacktrace</text>
 </g>
 <!-- mulle&#45;dlfcn -->
-<g id="node2" class="node">
+<g id="node4" class="node">
 <title>mulle&#45;dlfcn</title>
+<g id="a_node4"><a xlink:href="https://github.com/mulle-core/mulle-dlfcn" xlink:title="mulle&#45;dlfcn">
 <polygon fill="lightgrey" stroke="black" points="153,-108 57,-108 57,-72 153,-72 153,-108"/>
 <text text-anchor="middle" x="105" y="-86.3" font-family="Times,serif" font-size="14.00">mulle&#45;dlfcn</text>
+</a>
+</g>
 </g>
 <!-- mulle&#45;stacktrace&#45;&gt;mulle&#45;dlfcn -->
 <g id="edge3" class="edge">
@@ -28,22 +31,28 @@
 <polygon fill="black" stroke="black" points="108.5,-118.1 105,-108.1 101.5,-118.1 108.5,-118.1"/>
 </g>
 <!-- dlfcn&#45;win32 -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>dlfcn&#45;win32</title>
+<g id="a_node2"><a xlink:href="https://github.com/mulle-core/dlfcn-win32" xlink:title="dlfcn&#45;win32">
 <polygon fill="lightgrey" stroke="black" points="100,-36 0,-36 0,0 100,0 100,-36"/>
 <text text-anchor="middle" x="50" y="-14.3" font-family="Times,serif" font-size="14.00">dlfcn&#45;win32</text>
+</a>
+</g>
+</g>
+<!-- mulle&#45;c11 -->
+<g id="node3" class="node">
+<title>mulle&#45;c11</title>
+<g id="a_node3"><a xlink:href="https://github.com/mulle-c/mulle-c11" xlink:title="mulle&#45;c11">
+<polygon fill="lightgrey" stroke="black" points="204,-36 118,-36 118,0 204,0 204,-36"/>
+<text text-anchor="middle" x="161" y="-14.3" font-family="Times,serif" font-size="14.00">mulle&#45;c11</text>
+</a>
+</g>
 </g>
 <!-- mulle&#45;dlfcn&#45;&gt;dlfcn&#45;win32 -->
 <g id="edge1" class="edge">
 <title>mulle&#45;dlfcn&#45;&gt;dlfcn&#45;win32</title>
 <path fill="none" stroke="black" d="M91.4,-71.7C84.88,-63.39 76.93,-53.28 69.75,-44.14"/>
 <polygon fill="black" stroke="black" points="72.37,-41.81 63.44,-36.1 66.87,-46.13 72.37,-41.81"/>
-</g>
-<!-- mulle&#45;c11 -->
-<g id="node4" class="node">
-<title>mulle&#45;c11</title>
-<polygon fill="lightgrey" stroke="black" points="204,-36 118,-36 118,0 204,0 204,-36"/>
-<text text-anchor="middle" x="161" y="-14.3" font-family="Times,serif" font-size="14.00">mulle&#45;c11</text>
 </g>
 <!-- mulle&#45;dlfcn&#45;&gt;mulle&#45;c11 -->
 <g id="edge2" class="edge">

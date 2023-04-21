@@ -13,7 +13,7 @@ endif()
 set( SOURCES
 src/mulle-stacktrace.c
 src/mulle-stacktrace-execinfo.c
-src/mulle-stacktrace-windows.c
+src/mulle-stacktrace-nop.c
 )
 
 #

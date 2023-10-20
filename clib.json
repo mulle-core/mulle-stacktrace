@@ -1,7 +1,7 @@
 {
    "name" : "mulle-stacktrace",
-   "version" : "0.2.7",
-   "description" : "Stracktrace support for various OS",
+   "version" : "0.2.8",
+   "description" : "👣 Stracktrace support for various OS",
    "keywords" : [],
    "license" : "BSD-3-Clause",
    "repo" : "mulle-core/mulle-stacktrace",

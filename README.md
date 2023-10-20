@@ -62,6 +62,8 @@ Install the requirements:
 |----------------------------------------------|-----------------------
 | [mulle-dlfcn](https://github.com/mulle-core/mulle-dlfcn)             | ♿️ Shared library helper
 
+Download the latest [tar](https://github.com/mulle-core/mulle-stacktrace/archive/refs/tags/latest.tar.gz) or [zip](https://github.com/mulle-core/mulle-stacktrace/archive/refs/tags/latest.zip) archive and unpack it.
+
 Install **mulle-stacktrace** into `/usr/local` with [cmake](https://cmake.org):
 
 ``` sh

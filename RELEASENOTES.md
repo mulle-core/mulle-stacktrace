@@ -1,3 +1,8 @@
+## 0.3.0
+
+* added csv option for stacktrace, which gives a lot more info, ready to be processed by addr2line or so
+
+
 ### 0.2.9
 
  add some missing files

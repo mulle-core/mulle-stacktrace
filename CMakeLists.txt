@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.14)
 
-project( mulle-stacktrace VERSION 0.3.1 LANGUAGES C)
+project( mulle-stacktrace VERSION 0.3.2 LANGUAGES C)
 
 
 ### mulle-sde environment

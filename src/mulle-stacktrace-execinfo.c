@@ -330,7 +330,7 @@ static void   mulle_stacktrace_dump( struct mulle_stacktrace *stacktrace,
          {
             symbol_address = info.dli_saddr;
             symbol_offset  = (intptr_t) address - (intptr_t) symbol_address;
-            max            = symbol_offset < max ? symbol_offset : max;
+            max            = (size_t) symbol_offset < max ? (size_t) symbol_offset : max;
          }
          segment_name    = info.dli_fname ? (char *) info.dli_fname : "";
          segment_address = info.dli_fbase;

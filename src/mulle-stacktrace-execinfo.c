@@ -141,6 +141,12 @@ static int   _trim_arse_fat( char *s)
 
 static char  *_symbolize_nothing( void *adresse, size_t max, char *buf, size_t len, void **userinfo)
 {
+   MULLE_C_UNUSED( adresse);
+   MULLE_C_UNUSED( max);
+   MULLE_C_UNUSED( buf);
+   MULLE_C_UNUSED( len);
+   MULLE_C_UNUSED( userinfo);
+
    return( NULL);
 }
 
@@ -192,6 +198,9 @@ static int   _trim_boring_functions( char *s, int size)
 
 static int   keep_boring_functions( char *s, int size)
 {
+   MULLE_C_UNUSED( s);
+   MULLE_C_UNUSED( size);
+
    return( 0);
 }
 

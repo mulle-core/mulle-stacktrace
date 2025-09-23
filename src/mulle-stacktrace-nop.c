@@ -2,7 +2,7 @@
 
 #include "mulle-stacktrace.h"
 
-
+# ifndef HAVE_LIB_LIBBACKTRACE
 
 void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                mulle_stacktrace_symbolizer_t *symbolize,
@@ -43,5 +43,7 @@ int   mulle_stacktrace_count_frames( void)
 {
    return( 0);
 }
+
+# endif
 
 #endif

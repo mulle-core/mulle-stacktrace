@@ -90,3 +90,76 @@ else()
       endif()
    endif()
 endif()
+
+
+#
+# Generated from sourcetree: 772996EA-ADD3-41CD-903F-59749A13CAF9;libbacktrace;no-all-load,no-cmake-loader,no-cmake-searchpath,no-import,no-require;backtrace
+# Disable with : `mulle-sourcetree mark libbacktrace no-link`
+# Disable for this platform: `mulle-sourcetree mark libbacktrace no-cmake-platform-${MULLE_UNAME}`
+# Disable for a sdk: `mulle-sourcetree mark libbacktrace no-cmake-sdk-<name>`
+#
+if( COLLECT_DEPENDENCY_LIBRARIES_AS_NAMES)
+   list( APPEND DEPENDENCY_LIBRARIES "backtrace")
+else()
+   if( NOT LIBBACKTRACE_LIBRARY)
+      find_library( LIBBACKTRACE_LIBRARY NAMES
+         ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+         ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_STATIC_LIBRARY_SUFFIX}
+         backtrace
+         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+      )
+      if( NOT LIBBACKTRACE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         find_library( LIBBACKTRACE_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_STATIC_LIBRARY_SUFFIX}
+            backtrace
+         )
+      endif()
+      message( STATUS "LIBBACKTRACE_LIBRARY is ${LIBBACKTRACE_LIBRARY}")
+      #
+      # The order looks ascending, but due to the way this file is read
+      # it ends up being descending, which is what we need.
+      #
+      if( LIBBACKTRACE_LIBRARY)
+         #
+         # Add LIBBACKTRACE_LIBRARY to DEPENDENCY_LIBRARIES list.
+         # Disable with: `mulle-sourcetree mark libbacktrace no-cmake-add`
+         #
+         list( APPEND DEPENDENCY_LIBRARIES ${LIBBACKTRACE_LIBRARY})
+         #
+         # Inherit information from dependency.
+         # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
+         # Disable with: `mulle-sourcetree mark libbacktrace no-cmake-inherit`
+         #
+         # temporarily expand CMAKE_MODULE_PATH
+         get_filename_component( _TMP_LIBBACKTRACE_ROOT "${LIBBACKTRACE_LIBRARY}" DIRECTORY)
+         get_filename_component( _TMP_LIBBACKTRACE_ROOT "${_TMP_LIBBACKTRACE_ROOT}" DIRECTORY)
+         #
+         #
+         # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
+         # Disable with: `mulle-sourcetree mark libbacktrace no-cmake-dependency`
+         #
+         foreach( _TMP_LIBBACKTRACE_NAME "backtrace")
+            set( _TMP_LIBBACKTRACE_DIR "${_TMP_LIBBACKTRACE_ROOT}/include/${_TMP_LIBBACKTRACE_NAME}/cmake")
+            # use explicit path to avoid "surprises"
+            if( IS_DIRECTORY "${_TMP_LIBBACKTRACE_DIR}")
+               list( INSERT CMAKE_MODULE_PATH 0 "${_TMP_LIBBACKTRACE_DIR}")
+               #
+               include( "${_TMP_LIBBACKTRACE_DIR}/DependenciesAndLibraries.cmake" OPTIONAL)
+               #
+               list( REMOVE_ITEM CMAKE_MODULE_PATH "${_TMP_LIBBACKTRACE_DIR}")
+               #
+               unset( LIBBACKTRACE_DEFINITIONS)
+               include( "${_TMP_LIBBACKTRACE_DIR}/Definitions.cmake" OPTIONAL)
+               list( APPEND INHERITED_DEFINITIONS ${LIBBACKTRACE_DEFINITIONS})
+               break()
+            else()
+               message( STATUS "${_TMP_LIBBACKTRACE_DIR} not found")
+            endif()
+         endforeach()
+      else()
+         # Enable with: `mulle-sourcetree mark libbacktrace require`
+         message( STATUS "LIBBACKTRACE_LIBRARY is missing but it is marked as \"no-require\"")
+      endif()
+   endif()
+endif()

@@ -11,14 +11,8 @@ endif()
 # contents selected with patternfile ??-source--sources
 #
 set( SOURCES
+src/mulle-stacktrace-backtrace.c
 src/mulle-stacktrace.c
 src/mulle-stacktrace-execinfo.c
 src/mulle-stacktrace-nop.c
-)
-
-#
-# contents selected with patternfile ??-source--standalone-sources
-#
-set( STANDALONE_SOURCES
-src/mulle-stacktrace-standalone.c
 )

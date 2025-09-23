@@ -1,0 +1,18 @@
+#
+#
+#
+export MULLE_SDE_REFLECT_CALLBACKS="library@:${MULLE_SDE_REFLECT_CALLBACKS}"
+
+
+#
+#
+#
+export MULLE_SOURCETREE_GRAVEYARD_ENABLED="NO"
+
+
+#
+#
+#
+export MULLE_MATCH_PATH="${MULLE_MATCH_PATH}:../src"
+
+

@@ -1,0 +1,24 @@
+{
+   "description": "mulle-sde configuration for this project. See https://www.codebuff.com/config for all options.",
+   "startupProcesses": [
+      {
+         "name": "vibecoding",
+         "command": "mulle-sde vibecoding on",
+         "enabled": true
+      },
+      {
+         "name": "clean all",
+         "command": "mulle-sde clean all",
+         "enabled": true
+      }
+   ],
+   "fileChangeHooks": [
+      {
+         "name": "reflect added or removed files",
+         "command": "mulle-sde reflect",
+         "enabled": true
+      }
+   ],
+   "maxAgentSteps": 25,
+   "additionalProperties": {}
+}

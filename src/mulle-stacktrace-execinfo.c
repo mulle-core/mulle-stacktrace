@@ -39,6 +39,8 @@
 
 #include "mulle-stacktrace.h"
 
+#ifndef HAVE_LIB_LIBBACKTRACE
+
 #include <assert.h>
 #include <errno.h>
 #include <string.h>
@@ -265,10 +267,10 @@ static void  _shabby_default_dump( struct mulle_stacktrace *stacktrace,
 
 static struct mulle_stacktrace   dummy =
 {
-   _symbolize_nothing,
-   _trim_belly_fat,
-   _trim_arse_fat,
-   _trim_boring_functions
+   .symbolize      = _symbolize_nothing,
+   .trim_belly_fat = _trim_belly_fat,
+   .trim_arse_fat  = _trim_arse_fat,
+   .is_boring      = _trim_boring_functions
 };
 
 
@@ -530,5 +532,7 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
    stacktrace->trim_arse_fat   = p__trim_arse_fat  ? p__trim_arse_fat  : _keep_arse_fat;
    stacktrace->is_boring       = p_is_boring       ? p_is_boring       : keep_boring_functions;
 }
+
+#endif
 
 #endif

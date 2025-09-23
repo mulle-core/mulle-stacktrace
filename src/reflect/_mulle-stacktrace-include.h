@@ -14,6 +14,24 @@
 #ifndef _mulle_stacktrace_include_h__
 #define _mulle_stacktrace_include_h__
 
-/* no headers */
+// To remove the following dependency (headers and library) completely:
+//   `mulle-sde dependency remove libbacktrace`
+// (Use 772996EA-ADD3-41CD-903F-59749A13CAF9 instead of libbacktrace, if there are duplicate entries)
+//
+// You can tweak the following #include with these commands:
+//    remove #include: `mulle-sde dependency mark libbacktrace no-header`
+//    rename              : `mulle-sde dependency|library set libbacktrace include whatever.h`
+//    reorder             : `mulle-sde dependency move libbacktrace <up|down>`
+//    toggle #include: `mulle-sde dependency mark libbacktrace [no-]import`
+//    toggle public       : `mulle-sde dependency mark libbacktrace [no-]public`
+//    toggle optional     : `mulle-sde dependency mark libbacktrace [no-]require`
+//    remove for platform : `mulle-sde dependency mark libbacktrace no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
+#ifdef __has_include
+# if __has_include(<backtrace.h>)
+#  include <backtrace.h>   // libbacktrace
+#  define HAVE_LIB_LIBBACKTRACE
+# endif
+#endif
 
 #endif

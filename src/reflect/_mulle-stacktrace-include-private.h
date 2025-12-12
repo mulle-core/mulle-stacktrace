@@ -16,7 +16,7 @@
 
 // To remove the following dependency (headers and library) completely:
 //   `mulle-sde dependency remove mulle-dlfcn`
-// (Use 66937571-7F4E-4593-9167-3D82BB17CF84 instead of mulle-dlfcn, if there are duplicate entries)
+// (Use 572183FD-321B-462C-BE71-A91F1F2C3E40 instead of mulle-dlfcn, if there are duplicate entries)
 //
 // You can tweak the following #include with these commands:
 //    remove #include: `mulle-sde dependency mark mulle-dlfcn no-header`
@@ -28,5 +28,25 @@
 //    remove for platform : `mulle-sde dependency mark mulle-dlfcn no-platform-<uname>`
 //        (use `mulle-sourcetree-to-c --unames` to list known values)
 #include <mulle-dlfcn/mulle-dlfcn.h>   // mulle-dlfcn
+
+// To remove the following dependency (headers and library) completely:
+//   `mulle-sde dependency remove libbacktrace`
+// (Use 66417C96-608A-43F3-8B9B-287E82E08F69 instead of libbacktrace, if there are duplicate entries)
+//
+// You can tweak the following #include with these commands:
+//    remove #include: `mulle-sde dependency mark libbacktrace no-header`
+//    rename              : `mulle-sde dependency|library set libbacktrace include whatever.h`
+//    reorder             : `mulle-sde dependency move libbacktrace <up|down>`
+//    toggle #include: `mulle-sde dependency mark libbacktrace [no-]import`
+//    toggle public       : `mulle-sde dependency mark libbacktrace [no-]public`
+//    toggle optional     : `mulle-sde dependency mark libbacktrace [no-]require`
+//    remove for platform : `mulle-sde dependency mark libbacktrace no-platform-<uname>`
+//        (use `mulle-sourcetree-to-c --unames` to list known values)
+#ifdef __has_include
+# if __has_include(<backtrace.h>)
+#  include <backtrace.h>   // libbacktrace
+#  define HAVE_LIB_LIBBACKTRACE
+# endif
+#endif
 
 #endif

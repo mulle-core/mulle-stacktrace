@@ -44,8 +44,7 @@
 #include <ctype.h>
 
 // Trim leading address or path from symbol string
-static char *
-_trim_belly_fat(char *s)
+static char *   _trim_belly_fat( char *s)
 {
    char *sym;
 
@@ -62,8 +61,7 @@ _trim_belly_fat(char *s)
 }
 
 // Trim trailing offset or address from symbol string
-static int
-_trim_arse_fat(char *s)
+static int   _trim_arse_fat( char *s)
 {
    char *offset;
    int  len;
@@ -76,8 +74,7 @@ _trim_arse_fat(char *s)
 }
 
 // Filter out uninteresting stack frames
-static int
-_trim_boring_functions(char *s, int size)
+static int   _trim_boring_functions(char *s, int size)
 {
    int len;
 
@@ -90,11 +87,12 @@ _trim_boring_functions(char *s, int size)
    if (size == 3 && !strncmp(s, "0x0", 3))
       return(1);
 
-#define stracktrace_has_prefix(s, prefix) (!strncmp(s, prefix, strlen(prefix)))
-   if (stracktrace_has_prefix(s, "test_calloc_or_raise"))
-      return(1);
-   if (stracktrace_has_prefix(s, "test_realloc_or_raise"))
-      return(1);
+#define stracktrace_has_prefix(s, prefix) (! strncmp(s, prefix, strlen( prefix)))
+
+//   if (stracktrace_has_prefix(s, "test_calloc_or_raise"))
+//      return(1);
+//   if (stracktrace_has_prefix(s, "test_realloc_or_raise"))
+//      return(1);
    if (stracktrace_has_prefix(s, "test_realloc"))
       return(1);
    if (stracktrace_has_prefix(s, "test_calloc"))
@@ -112,8 +110,11 @@ _trim_boring_functions(char *s, int size)
 }
 
 // Default symbolize function (placeholder)
-static char *
-_symbolize_nothing(void *address, size_t max, char *buf, size_t len, void **userinfo)
+static char *   _symbolize_nothing( void *address,
+                                    size_t max,
+                                    char *buf,
+                                    size_t len,
+                                    void **userinfo)
 {
    MULLE_C_UNUSED(address);
    MULLE_C_UNUSED(max);
@@ -124,25 +125,22 @@ _symbolize_nothing(void *address, size_t max, char *buf, size_t len, void **user
 }
 
 // Keep full symbol string (no trimming)
-static char *
-_keep_belly_fat(char *s)
+static char   *_keep_belly_fat( char *s)
 {
-   return(s);
+   return( s);
 }
 
 // Keep full string length
-static int
-_keep_arse_fat(char *s)
+static int   _keep_arse_fat( char *s)
 {
-   int len;
+   int   len;
 
    len = (int)strlen(s);
-   return(len);
+   return( len);
 }
 
 // Keep all functions (no filtering)
-static int
-keep_boring_functions(char *s, int size)
+static int   keep_boring_functions( char *s, int size)
 {
    MULLE_C_UNUSED(s);
    MULLE_C_UNUSED(size);
@@ -153,8 +151,7 @@ keep_boring_functions(char *s, int size)
 static struct backtrace_state *global_state;
 
 // Error callback for libbacktrace
-static void
-error_callback(void *data, const char *msg, int errnum)
+static void   error_callback( void *data, const char *msg, int errnum)
 {
    MULLE_C_UNUSED(data);
    fprintf(stderr, "libbacktrace error: %s (errno: %d)\n", msg, errnum);
@@ -173,16 +170,20 @@ struct stacktrace_context
    int                     frames_processed;
 };
 
+
 // Callback for normal format
-static int
-normal_callback(void *data, uintptr_t pc, const char *filename, int lineno, const char *function)
+static int   normal_callback( void *data,
+                              uintptr_t pc,
+                              const char *filename,
+                              int lineno,
+                              const char *function)
 {
-   struct stacktrace_context *ctx;
-   char                      buf[512];
-   char                      *s;
-   int                       size;
-   char                      user_buf[512];
-   void                      *userinfo;
+   struct stacktrace_context   *ctx;
+   char                        buf[512];
+   char                        *s;
+   int                         size;
+   char                        user_buf[512];
+   void                        *userinfo;
 
    ctx = (struct stacktrace_context *)data;
    if (ctx->frames_processed < ctx->offset)
@@ -228,15 +229,21 @@ normal_callback(void *data, uintptr_t pc, const char *filename, int lineno, cons
 }
 
 // Callback for trimmed format (same as normal, for consistency with original)
-static int
-trimmed_callback(void *data, uintptr_t pc, const char *filename, int lineno, const char *function)
+static int   trimmed_callback( void *data,
+                               uintptr_t pc,
+                               const char *filename,
+                               int lineno,
+                               const char *function)
 {
    return(normal_callback(data, pc, filename, lineno, function));
 }
 
 // Callback for linefeed format
-static int
-linefeed_callback(void *data, uintptr_t pc, const char *filename, int lineno, const char *function)
+static int   linefeed_callback( void *data,
+                                uintptr_t pc,
+                                const char *filename,
+                                int lineno,
+                                const char *function)
 {
    struct stacktrace_context *ctx;
    char                      buf[512];
@@ -285,8 +292,11 @@ linefeed_callback(void *data, uintptr_t pc, const char *filename, int lineno, co
 }
 
 // Callback for CSV format
-static int
-csv_callback(void *data, uintptr_t pc, const char *filename, int lineno, const char *function)
+static int   csv_callback( void *data,
+                           uintptr_t pc,
+                           const char *filename,
+                           int lineno,
+                           const char *function)
 {
    struct stacktrace_context *ctx;
    char                      buf[512];
@@ -301,7 +311,7 @@ csv_callback(void *data, uintptr_t pc, const char *filename, int lineno, const c
       return(0);
    }
 
-   if (function || filename)
+   if( function || filename)
    {
       snprintf(buf, sizeof(buf), "0x%lx %s at %s:%d",
                (unsigned long)pc,
@@ -344,17 +354,18 @@ static struct mulle_stacktrace   dummy =
    .symbolize      = _symbolize_nothing,
    .trim_belly_fat = _trim_belly_fat,
    .trim_arse_fat  = _trim_arse_fat,
-   .is_boring      = _trim_boring_functions
+   .is_boring      = _trim_boring_functions,
+   .backend        = "backtrace"
 };
 
-void  _mulle_stacktrace(struct mulle_stacktrace      *stacktrace,
-                        int                          offset,
-                        enum mulle_stacktrace_format format,
-                        FILE                         *fp)
+void   _mulle_stacktrace( struct mulle_stacktrace      *stacktrace,
+                          int                          offset,
+                          enum mulle_stacktrace_format format,
+                          FILE                         *fp)
 {
-   char                    *delimchar;
-   struct stacktrace_context ctx;
-   int                     (*callback)(void *, uintptr_t, const char *, int, const char *);
+   char                        *delimchar;
+   struct stacktrace_context   ctx;
+   int                         (*callback)(void *, uintptr_t, const char *, int, const char *);
 
    if( ! stacktrace)
       stacktrace = &dummy;
@@ -367,20 +378,20 @@ void  _mulle_stacktrace(struct mulle_stacktrace      *stacktrace,
    case mulle_stacktrace_trimmed:
       fprintf(fp, " : [");
       delimchar = " |";
-      callback = format == mulle_stacktrace_normal ? normal_callback : trimmed_callback;
+      callback  = format == mulle_stacktrace_normal ? normal_callback : trimmed_callback;
       break;
    case mulle_stacktrace_linefeed:
       delimchar = "\n";
-      callback = linefeed_callback;
+      callback  = linefeed_callback;
       break;
    default: // mulle_stacktrace_csv
       fprintf(fp, "address,segment_offset,symbol_offset,symbol_address,symbol_name,segment_address,segment_name\n");
       delimchar = "\n";
-      callback = csv_callback;
+      callback  = csv_callback;
       break;
    }
 
-   if(! global_state)
+   if( ! global_state)
    {
       global_state = backtrace_create_state(NULL, 1, error_callback, NULL);
       if(! global_state)
@@ -415,8 +426,7 @@ void  _mulle_stacktrace(struct mulle_stacktrace      *stacktrace,
    }
 }
 
-int
-mulle_stacktrace_count_frames(void)
+int   mulle_stacktrace_count_frames(void)
 {
    struct stacktrace_context ctx;
    int                      frame_count;
@@ -431,31 +441,31 @@ mulle_stacktrace_count_frames(void)
    ctx.frame_count      = 0;
    ctx.frames_processed = 0;
 
-   backtrace_full(global_state, 0, normal_callback, error_callback, &ctx);
+   backtrace_full( global_state, 0, normal_callback, error_callback, &ctx);
    frame_count = ctx.frame_count;
    return(frame_count);
 }
 
-void
-_mulle_stacktrace_init_default(struct mulle_stacktrace *stacktrace)
+void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace)
 {
    stacktrace->symbolize       = _symbolize_nothing;
    stacktrace->trim_belly_fat  = _trim_belly_fat;
    stacktrace->trim_arse_fat   = _trim_arse_fat;
    stacktrace->is_boring       = _trim_boring_functions;
+   stacktrace->backend         = "backtrace";
 }
 
-void
-_mulle_stacktrace_init(struct mulle_stacktrace *stacktrace,
-                       mulle_stacktrace_symbolizer_t *p_symbolize,
-                       char *(*p_trim_belly_fat)(char *),
-                       int (*p_trim_arse_fat)(char *),
-                       int (*p_is_boring)(char *, int size))
+void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
+                               mulle_stacktrace_symbolizer_t *p_symbolize,
+                               char *(*p_trim_belly_fat)(char *),
+                               int (*p_trim_arse_fat)(char *),
+                               int (*p_is_boring)(char *, int size))
 {
    stacktrace->symbolize       = p_symbolize ? p_symbolize : _symbolize_nothing;
    stacktrace->trim_belly_fat  = p_trim_belly_fat ? p_trim_belly_fat : _keep_belly_fat;
    stacktrace->trim_arse_fat   = p_trim_arse_fat ? p_trim_arse_fat : _keep_arse_fat;
    stacktrace->is_boring       = p_is_boring ? p_is_boring : keep_boring_functions;
+   stacktrace->backend         = "backtrace";
 }
 
 #endif

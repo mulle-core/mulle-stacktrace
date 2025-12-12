@@ -45,6 +45,15 @@
 #include <stdio.h>
 
 
+
+#ifdef __has_include
+# if __has_include(<backtrace.h>)
+#  include <backtrace.h>   // libbacktrace
+#  define HAVE_LIB_LIBBACKTRACE
+# endif
+#endif
+
+
 /*
  *  (c) 2018 nat
  *
@@ -91,6 +100,7 @@ struct mulle_stacktrace
    char                           *(*trim_belly_fat)( char *s);
    int                            (*trim_arse_fat)( char *s);
    int                            (*is_boring)( char *s, int size);
+   char                           *backend;
 };
 
 
@@ -130,6 +140,20 @@ static inline void   mulle_stacktrace( struct mulle_stacktrace *stacktrace, FILE
 static inline void   mulle_stacktrace_once( FILE *fp)
 {
    _mulle_stacktrace( NULL, 1, mulle_stacktrace_trimmed, fp);
+}
+
+
+MULLE_C_NONNULL_RETURN
+static inline char  *mulle_stacktrace_get_backend( struct mulle_stacktrace *stacktrace)
+{
+   struct mulle_stacktrace   dummy;
+
+   if( ! stacktrace)
+   {
+      _mulle_stacktrace_init( &dummy, 0, 0, 0, 0);
+      stacktrace = &dummy;
+   }
+   return( stacktrace->backend);
 }
 
 

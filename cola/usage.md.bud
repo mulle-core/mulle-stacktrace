@@ -1,0 +1,31 @@
+## API
+
+### Core Functions
+
+**mulle_stacktrace_once( fp)** - Print current stacktrace to file pointer
+**mulle_stacktrace( stacktrace, fp)** - Print with custom stacktrace configuration
+**_mulle_stacktrace( stacktrace, offset, format, fp)** - Full control with format options
+
+### Format Options
+
+| Option                      | Description
+|-----------------------------|--------------------------------
+| `mulle_stacktrace_normal`   | Full stacktrace
+| `mulle_stacktrace_trimmed`  | Remove system frames (default)
+| `mulle_stacktrace_linefeed` | One frame per line
+| `mulle_stacktrace_csv`      | CSV format
+
+### Example
+
+```c
+#include <mulle-stacktrace/mulle-stacktrace.h>
+
+void foo()
+{
+   // Simple usage - print trimmed stacktrace
+   mulle_stacktrace_once( stdout);
+
+   // Full control - print with linefeeds, skip 1 frame
+   _mulle_stacktrace( NULL, 1, mulle_stacktrace_linefeed, stdout);
+}
+```

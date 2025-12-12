@@ -1,6 +1,6 @@
 {
    "name" : "mulle-stacktrace",
-   "version" : "0.3.2",
+   "version" : "0.4.0",
    "description" : "👣 Stracktrace support for various OS",
    "keywords" : [],
    "license" : "BSD-3-Clause",

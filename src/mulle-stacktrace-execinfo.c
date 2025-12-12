@@ -33,7 +33,7 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#if ! (defined( _WIN32) || defined( __MULLE_MUSL__) || defined( __COSMOPOLITAN__) || defined( __MULLE_COSMOPOLITAN__) || defined(__emscripten__))
+#if ! (defined( _WIN32) || defined( __MULLE_MUSL__) || defined( __COSMOPOLITAN__) || defined( __MULLE_COSMOPOLITAN__) || defined( __EMSCRIPTEN__) || defined( __wasm__))
 
 #define _GNU_SOURCE
 
@@ -270,7 +270,8 @@ static struct mulle_stacktrace   dummy =
    .symbolize      = _symbolize_nothing,
    .trim_belly_fat = _trim_belly_fat,
    .trim_arse_fat  = _trim_arse_fat,
-   .is_boring      = _trim_boring_functions
+   .is_boring      = _trim_boring_functions,
+   .backend        = "execinfo"
 };
 
 
@@ -518,6 +519,7 @@ void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace)
    stacktrace->trim_belly_fat = _trim_belly_fat;
    stacktrace->trim_arse_fat  = _trim_arse_fat;
    stacktrace->is_boring      = _trim_boring_functions;
+   stacktrace->backend        = "execinfo";
 }
 
 
@@ -531,6 +533,7 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
    stacktrace->trim_belly_fat  = p__trim_belly_fat ? p__trim_belly_fat : _keep_belly_fat;
    stacktrace->trim_arse_fat   = p__trim_arse_fat  ? p__trim_arse_fat  : _keep_arse_fat;
    stacktrace->is_boring       = p_is_boring       ? p_is_boring       : keep_boring_functions;
+   stacktrace->backend         = "execinfo";
 }
 
 #endif

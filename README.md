@@ -3,8 +3,8 @@
 #### 👣 Stracktrace support for various OS
 
 The idea here is to have a unified library for stacktraces.
-This currently just uses `<execinfo.h>`. It will need more code to support
-windows. This is not doing much at the moment and not doing it very well.
+It now defaults to [libbacktrace](https://github.com/ianlancetaylor/libbacktrace)`
+as the actual stacktrace implemntation.
 
 
 
@@ -15,7 +15,37 @@ windows. This is not doing much at the moment and not doing it very well.
 
 
 
+## API
 
+### Core Functions
+
+**mulle_stacktrace_once( fp)** - Print current stacktrace to file pointer
+**mulle_stacktrace( stacktrace, fp)** - Print with custom stacktrace configuration
+**_mulle_stacktrace( stacktrace, offset, format, fp)** - Full control with format options
+
+### Format Options
+
+| Option                      | Description
+|-----------------------------|--------------------------------
+| `mulle_stacktrace_normal`   | Full stacktrace
+| `mulle_stacktrace_trimmed`  | Remove system frames (default)
+| `mulle_stacktrace_linefeed` | One frame per line
+| `mulle_stacktrace_csv`      | CSV format
+
+### Example
+
+```c
+#include <mulle-stacktrace/mulle-stacktrace.h>
+
+void foo()
+{
+   // Simple usage - print trimmed stacktrace
+   mulle_stacktrace_once( stdout);
+
+   // Full control - print with linefeeds, skip 1 frame
+   _mulle_stacktrace( NULL, 1, mulle_stacktrace_linefeed, stdout);
+}
+```
 
 
 ### You are here

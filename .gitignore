@@ -53,3 +53,8 @@ cola/wilted/
 .mulle/etc/make/build-dir
 research/
 vgcore.*
+test*/**/*.test.*
+/*.md
+!/AGENTS.md
+!/README.md
+build-*/

@@ -12,23 +12,29 @@ if( MULLE_TRACE_INCLUDE)
 endif()
 
 #
-# Generated from sourcetree: 66937571-7F4E-4593-9167-3D82BB17CF84;mulle-dlfcn;no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;
+# Generated from sourcetree: 572183FD-321B-462C-BE71-A91F1F2C3E40;mulle-dlfcn;no-all-load,no-cmake-searchpath,no-import,no-public,no-singlephase;mulle-core,mulle-dlfcn
 # Disable with : `mulle-sourcetree mark mulle-dlfcn no-link`
 # Disable for this platform: `mulle-sourcetree mark mulle-dlfcn no-cmake-platform-${MULLE_UNAME}`
 # Disable for a sdk: `mulle-sourcetree mark mulle-dlfcn no-cmake-sdk-<name>`
 #
 if( COLLECT_DEPENDENCY_LIBRARIES_AS_NAMES)
-   list( APPEND DEPENDENCY_LIBRARIES "mulle-dlfcn")
+   list( APPEND DEPENDENCY_LIBRARIES "mulle-core")
 else()
    if( NOT MULLE__DLFCN_LIBRARY)
       find_library( MULLE__DLFCN_LIBRARY NAMES
+         ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+         ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_STATIC_LIBRARY_SUFFIX}
+         mulle-core
          ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
          ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_STATIC_LIBRARY_SUFFIX}
          mulle-dlfcn
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
       )
       if( NOT MULLE__DLFCN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
          find_library( MULLE__DLFCN_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_STATIC_LIBRARY_SUFFIX}
+            mulle-core
             ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
             ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_STATIC_LIBRARY_SUFFIX}
             mulle-dlfcn
@@ -58,7 +64,7 @@ else()
          # Search for "Definitions.cmake" and "DependenciesAndLibraries.cmake" to include.
          # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-dependency`
          #
-         foreach( _TMP_MULLE__DLFCN_NAME "mulle-dlfcn")
+         foreach( _TMP_MULLE__DLFCN_NAME "mulle-core" "mulle-dlfcn")
             set( _TMP_MULLE__DLFCN_DIR "${_TMP_MULLE__DLFCN_ROOT}/include/${_TMP_MULLE__DLFCN_NAME}/cmake")
             # use explicit path to avoid "surprises"
             if( IS_DIRECTORY "${_TMP_MULLE__DLFCN_DIR}")
@@ -86,27 +92,32 @@ else()
          endforeach()
       else()
          # Disable with: `mulle-sourcetree mark mulle-dlfcn no-require-link`
-         message( SEND_ERROR "MULLE__DLFCN_LIBRARY was not found")
+         message( SEND_ERROR "MULLE__DLFCN_LIBRARY was not found in ${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}mulle-core${CMAKE_STATIC_LIBRARY_SUFFIX}
+mulle-core
+${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+${CMAKE_STATIC_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_STATIC_LIBRARY_SUFFIX}
+mulle-dlfcn")
       endif()
    endif()
 endif()
 
 
 #
-# Generated from sourcetree: 772996EA-ADD3-41CD-903F-59749A13CAF9;libbacktrace;no-all-load,no-cmake-loader,no-cmake-searchpath,no-import,no-require;backtrace
+# Generated from sourcetree: 66417C96-608A-43F3-8B9B-287E82E08F69;libbacktrace;no-cmake-loader,no-cmake-searchpath,no-import,no-public,no-require;backtrace
 # Disable with : `mulle-sourcetree mark libbacktrace no-link`
 # Disable for this platform: `mulle-sourcetree mark libbacktrace no-cmake-platform-${MULLE_UNAME}`
 # Disable for a sdk: `mulle-sourcetree mark libbacktrace no-cmake-sdk-<name>`
 #
-if( COLLECT_DEPENDENCY_LIBRARIES_AS_NAMES)
-   list( APPEND DEPENDENCY_LIBRARIES "backtrace")
+if( COLLECT_ALL_LOAD_DEPENDENCY_LIBRARIES_AS_NAMES)
+   list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "backtrace")
 else()
    if( NOT LIBBACKTRACE_LIBRARY)
       find_library( LIBBACKTRACE_LIBRARY NAMES
          ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
          ${CMAKE_STATIC_LIBRARY_PREFIX}backtrace${CMAKE_STATIC_LIBRARY_SUFFIX}
          backtrace
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH
+         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
       )
       if( NOT LIBBACKTRACE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
          find_library( LIBBACKTRACE_LIBRARY NAMES
@@ -122,10 +133,10 @@ else()
       #
       if( LIBBACKTRACE_LIBRARY)
          #
-         # Add LIBBACKTRACE_LIBRARY to DEPENDENCY_LIBRARIES list.
+         # Add LIBBACKTRACE_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark libbacktrace no-cmake-add`
          #
-         list( APPEND DEPENDENCY_LIBRARIES ${LIBBACKTRACE_LIBRARY})
+         list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LIBBACKTRACE_LIBRARY})
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader

@@ -3,6 +3,8 @@
    {
       description="👣 Stracktrace support for various OS";
       domain="github";
+      language="c";
+      dialect="c";
       name="mulle-stacktrace";
       user="mulle-core";
       repo="mulle-stacktrace";
@@ -17,6 +19,14 @@
          name="mulle-dlfcn";
          repo="mulle-dlfcn";
          url="https://github.com/mulle-core/mulle-dlfcn";
+         user="mulle-core";
+      },
+      {
+         description="A C library that may be linked into a C/C++ program to produce symbolic backtraces";
+         domain="github";
+         name="libbacktrace";
+         repo="libbacktrace";
+         url="https://github.com/mulle-core/libbacktrace";
          user="mulle-core";
       }
    );

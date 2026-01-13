@@ -52,3 +52,21 @@ export DLFCN__WIN32_URL="https://github.com/mulle-core/dlfcn-win32.git"
 export DLFCN__WIN32_BRANCH="prerelease"
 
 
+#
+# libbacktrace nodetype: ${LIBBACKTRACE_NODETYPE:-tar}
+#
+export LIBBACKTRACE_NODETYPE="git"
+
+
+#
+# libbacktrace url: ${LIBBACKTRACE_URL:-https://github.com/mulle-core/libbacktrace/archive/${MULLE_TAG}.tar.gz}
+#
+export LIBBACKTRACE_URL="https://github.com/mulle-core/libbacktrace.git"
+
+
+#
+# libbacktrace branch: ${LIBBACKTRACE_BRANCH}
+#
+export LIBBACKTRACE_BRANCH="prerelease"
+
+

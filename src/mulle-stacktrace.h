@@ -44,12 +44,18 @@
 #include <stddef.h>
 #include <stdio.h>
 
+#define MULLE_STRACKTRACE_BACKEND_NONE          0
+#define MULLE_STRACKTRACE_BACKEND_LIBBACKTRACE  1
+#define MULLE_STRACKTRACE_BACKEND_EXECINFO      2
 
 
-#ifdef __has_include
-# if __has_include(<backtrace.h>)
-#  include <backtrace.h>   // libbacktrace
-#  define HAVE_LIB_LIBBACKTRACE
+#ifdef HAVE_LIB_LIBBACKTRACE
+# define MULLE_STRACKTRACE_BACKEND   MULLE_STRACKTRACE_BACKEND_LIBBACKTRACE
+#else
+# if (defined( __APPLE__) || defined( __linux__) || defined( __FreeBSD__) || defined( __OpenBSD__) || defined( __NetBSD__))
+#  define MULLE_STRACKTRACE_STYLE    MULLE_STRACKTRACE_BACKEND_EXECINFO
+# else
+#  define MULLE_STRACKTRACE_STYLE    MULLE_STRACKTRACE_BACKEND_NONE
 # endif
 #endif
 

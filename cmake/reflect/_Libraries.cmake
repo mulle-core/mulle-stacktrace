@@ -11,4 +11,37 @@ if( MULLE_TRACE_INCLUDE)
    message( STATUS "# Include \"${CMAKE_CURRENT_LIST_FILE}\"" )
 endif()
 
-# there are no libraries in the sourcetree
+#
+# Generated from sourcetree: AD43D2BC-386C-4D71-8BB6-92865B357E0D;unwind;no-all-load,no-build,no-cmake-inherit,no-delete,no-dependency,no-dynamic-link,no-fs,no-header,no-import,no-require,no-share,no-update,only-platform-mingw,only-platform-windows;unwind
+# Disable with : `mulle-sourcetree mark unwind `
+# Disable for this platform: `mulle-sourcetree mark unwind no-cmake-platform-${MULLE_UNAME}`
+# Disable for a sdk: `mulle-sourcetree mark unwind no-cmake-sdk-<name>`
+#
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+   if( COLLECT_OS_SPECIFIC_LIBRARIES_AS_NAMES)
+      list( APPEND OS_SPECIFIC_LIBRARIES "unwind")
+   else()
+      if( NOT UNWIND_LIBRARY)
+         find_library( UNWIND_LIBRARY NAMES
+            ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_STATIC_LIBRARY_SUFFIX}
+         )
+         message( STATUS "UNWIND_LIBRARY is ${UNWIND_LIBRARY}")
+         #
+         # The order looks ascending, but due to the way this file is read
+         # it ends up being descending, which is what we need.
+         #
+         if( UNWIND_LIBRARY)
+            #
+            # Add UNWIND_LIBRARY to OS_SPECIFIC_LIBRARIES list.
+            # Disable with: `mulle-sourcetree mark unwind no-cmake-add`
+            #
+            list( APPEND OS_SPECIFIC_LIBRARIES ${UNWIND_LIBRARY})
+            # intentionally left blank
+         else()
+            # Enable with: `mulle-sourcetree mark unwind require`
+            message( STATUS "UNWIND_LIBRARY is missing but it is marked as \"no-require\"")
+         endif()
+      endif()
+   endif()
+endif()

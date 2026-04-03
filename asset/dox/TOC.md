@@ -1,4 +1,5 @@
 # mulle-stacktrace Library Documentation for AI
+<!-- Keywords: debugging, stacktrace -->
 
 ## 1. Introduction & Purpose
 

@@ -37,11 +37,27 @@
 
 #include "mulle-stacktrace.h"
 
-
-int   __MULLE_STACKTRACE_ranlib__;
+#ifdef DEBUG
+# define MULLE_STACKTRACE_DEBUG
+#endif
 
 
 uint32_t   mulle_stacktrace_get_version( void)
 {
    return( MULLE__STACKTRACE_VERSION);
 }
+
+
+
+#if defined( _WIN32) && defined( MULLE_INCLUDE_DYNAMIC) && defined( MULLE_STACKTRACE_DEBUG) && ! defined( MULLE__CORE__ALL_LOAD_BUILD)
+BOOL WINAPI   DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
+{
+   MULLE_C_UNUSED( hinstDLL);
+   MULLE_C_UNUSED( fdwReason);
+   MULLE_C_UNUSED( lpvReserved);
+
+   if( fdwReason == DLL_PROCESS_ATTACH)
+      fprintf( stderr, "mulle-stacktrace DLL loaded\n");
+   return TRUE;
+}
+#endif

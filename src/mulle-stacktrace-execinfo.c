@@ -33,13 +33,14 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#if ! (defined( _WIN32) || defined( __MULLE_MUSL__) || defined( __COSMOPOLITAN__) || defined( __MULLE_COSMOPOLITAN__) || defined( __EMSCRIPTEN__) || defined( __wasm__))
-
-#define _GNU_SOURCE
+#include "include-private.h"
 
 #include "mulle-stacktrace.h"
 
-#ifndef HAVE_LIB_LIBBACKTRACE
+#if MULLE_STRACKTRACE_BACKEND == MULLE_STRACKTRACE_BACKEND_EXECINFO
+
+#define _GNU_SOURCE
+
 
 #include <assert.h>
 #include <errno.h>
@@ -536,6 +537,4 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
    stacktrace->backend         = "execinfo";
 }
 
-#endif
-
-#endif
+#endif  // ! defined( HAVE_LIB_LIBBACKTRACE) && (__APPLE__ || __linux__ || BSD)

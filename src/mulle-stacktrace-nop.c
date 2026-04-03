@@ -1,5 +1,5 @@
 //
-//  mulle-stacktrace-execinfo.c
+//  mulle-stacktrace-nop.c
 //  mulle-core
 //
 //  Created by Nat! on 04.11.15.
@@ -33,11 +33,19 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-#if (defined( _WIN32) || defined( __MULLE_MUSL__) || defined( __COSMOPOLITAN__) || defined( __MULLE_COSMOPOLITAN__) || defined( __EMSCRIPTEN__) || defined( __wasm__))
+// Fallback for platforms without libbacktrace or execinfo
+
+#include "include-private.h"
 
 #include "mulle-stacktrace.h"
 
-# ifndef HAVE_LIB_LIBBACKTRACE
+#if MULLE_STRACKTRACE_BACKEND == MULLE_STRACKTRACE_BACKEND_NONE
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 
 void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                mulle_stacktrace_symbolizer_t *symbolize,
@@ -45,7 +53,6 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
                                int (*trim_arse_fat)( char *),
                                int (*is_boring)( char *, int size))
 {
-	// does nothing
    MULLE_C_UNUSED( stacktrace);
    MULLE_C_UNUSED( symbolize);
    MULLE_C_UNUSED( trim_belly_fat);
@@ -54,13 +61,12 @@ void   _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace,
    stacktrace->backend = "nop";
 }
 
-// stacktrace may be NULL
+
 void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
                          int offset,
                          enum mulle_stacktrace_format format,
                          FILE *fp)
 {
-	// does absolutely nothing
    MULLE_C_UNUSED( stacktrace);
    MULLE_C_UNUSED( offset);
    MULLE_C_UNUSED( format);
@@ -70,7 +76,6 @@ void  _mulle_stacktrace( struct mulle_stacktrace *stacktrace,
 
 void   _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace)
 {
-  // does absolutely nothing
    MULLE_C_UNUSED( stacktrace);
    _mulle_stacktrace_init( stacktrace, 0, 0, 0, 0);
 }
@@ -81,6 +86,4 @@ int   mulle_stacktrace_count_frames( void)
    return( 0);
 }
 
-# endif
-
-#endif
+#endif  // ! defined( HAVE_LIB_LIBBACKTRACE) && ! (__APPLE__ || __linux__ || BSD)

@@ -58,3 +58,6 @@ test*/**/*.test.*
 !/AGENTS.md
 !/README.md
 build-*/
+mulle-stacktrace.sublime-workspace
+.roam
+.graveyard

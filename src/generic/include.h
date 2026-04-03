@@ -31,15 +31,18 @@
 
 #include <mulle-c11/mulle-c11.h>  // lazy fix for missing dependency
 
-#ifdef MULLE__STACKTRACE_BUILD
-# define MULLE__STACKTRACE_GLOBAL    MULLE_C_GLOBAL
-#else
-# if defined( MULLE_STACKTRACE_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( MULLE_STACKTRACE_INCLUDE_STATIC))
-#  define MULLE__STACKTRACE_GLOBAL   MULLE_C_EXTERN_GLOBAL
-# else
-#  define MULLE__STACKTRACE_GLOBAL   extern
-# endif
-#endif
+// stacktrace will always be statically linked!!
+#define MULLE__STACKTRACE_GLOBAL   extern
+
+//#if defined( MULLE__STACKTRACE_BUILD) || defined( MULLE__CORE__ALL__LOAD_BUILD)
+//# define MULLE__STACKTRACE_GLOBAL    MULLE_C_GLOBAL
+//#else
+//# if defined( MULLE_STACKTRACE_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( MULLE_STACKTRACE_INCLUDE_STATIC))
+//#  define MULLE__STACKTRACE_GLOBAL   MULLE_C_EXTERN_GLOBAL
+//# else
+//#  define MULLE__STACKTRACE_GLOBAL   extern
+//# endif
+//#endif
 
 /* You can add some more include statements here */
 

@@ -6,8 +6,9 @@
    "license" : "BSD-3-Clause",
    "repo" : "mulle-core/mulle-stacktrace",
    "src" : [
-      "src/include-private.h",
-      "src/include.h",
+      "asset/dox/TOC.md",
+      "src/generic/include-private.h",
+      "src/generic/include.h",
       "src/mulle-stacktrace-backtrace.c",
       "src/mulle-stacktrace-execinfo.c",
       "src/mulle-stacktrace-nop.c",

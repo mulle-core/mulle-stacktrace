@@ -33,11 +33,15 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 //
 
+// tricky: mulle-core-all-load will have a different include-private.h
+#include "include-private.h"
+
+
 #include "mulle-stacktrace.h"
 
-#ifdef HAVE_LIB_LIBBACKTRACE
+#if MULLE_STRACKTRACE_BACKEND == MULLE_STRACKTRACE_BACKEND_LIBBACKTRACE
 
-#include <backtrace.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -160,14 +164,14 @@ static void   error_callback( void *data, const char *msg, int errnum)
 // Structure to hold stacktrace context for callbacks
 struct stacktrace_context
 {
-   struct mulle_stacktrace *stacktrace;
-   FILE                    *fp;
-   char                    *delim;
-   char                    *delimchar;
-   enum mulle_stacktrace_format format;
-   int                     frame_count;
-   int                     offset;
-   int                     frames_processed;
+   struct mulle_stacktrace        *stacktrace;
+   FILE                           *fp;
+   char                           *delim;
+   char                           *delimchar;
+   enum mulle_stacktrace_format   format;
+   int                            frame_count;
+   int                            offset;
+   int                            frames_processed;
 };
 
 

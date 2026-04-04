@@ -7,10 +7,10 @@
 
 #if defined( MULLE__DLFCN_VERSION)
 # ifndef MULLE__DLFCN_VERSION_MIN
-#  define MULLE__DLFCN_VERSION_MIN  ((0UL << 20) | (0 << 8) | 16)
+#  define MULLE__DLFCN_VERSION_MIN  ((0UL << 20) | (1 << 8) | 0)
 # endif
 # ifndef MULLE__DLFCN_VERSION_MAX
-#  define MULLE__DLFCN_VERSION_MAX  ((0UL << 20) | (1 << 8) | 0)
+#  define MULLE__DLFCN_VERSION_MAX  ((0UL << 20) | (2 << 8) | 0)
 # endif
 # if MULLE__DLFCN_VERSION < MULLE__DLFCN_VERSION_MIN || MULLE__DLFCN_VERSION >= MULLE__DLFCN_VERSION_MAX
 #  pragma message("MULLE__DLFCN_VERSION     is " MULLE_C_STRINGIFY_MACRO( MULLE__DLFCN_VERSION))

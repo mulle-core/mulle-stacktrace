@@ -1,136 +1,136 @@
 # mulle-stacktrace Library Documentation for AI
-<!-- Keywords: debugging, stacktrace -->
+<!-- Keywords: stacktrace, backtrace, symbolizer, debugging, libbacktrace, execinfo -->
 
 ## 1. Introduction & Purpose
 
-`mulle-stacktrace` is a C library designed to provide a simple, cross-platform way to capture and print a stack trace of the current execution path. A stack trace is a list of the active function calls at a certain point in time, which is an essential tool for debugging crashes and understanding program flow.
-
-The library abstracts away the platform-specific details of stack walking. On POSIX-compliant systems like Linux and macOS, it currently wraps the functionality provided by `<execinfo.h>`. The goal is to provide a single, unified API that works across different operating systems.
+- A compact C library to capture and print stack traces (frames + symbols) across platforms.
+- Solves unified stacktrace collection and formatting for debugging and logging; defaults to libbacktrace when available and falls back to execinfo on POSIX systems.
+- Key features: simple one-shot printing, configurable stacktrace instance (symbolizer callbacks, trimming), multiple output formats (normal, trimmed, linefeed, CSV).
+- Component of mulle-core; depends on mulle-dlfcn and libbacktrace (optional).
 
 ## 2. Key Concepts & Design Philosophy
 
-- **Simplicity:** The library exposes a very straightforward API. The primary function captures the stack trace, and a secondary function prints it in a human-readable format.
-- **Abstraction:** It hides the underlying implementation (e.g., `backtrace`, `backtrace_symbols_fd`) from the user, providing a portable interface.
-- **On-Demand Symbolization:** The conversion of return addresses to function names, file names, and line numbers (a process called symbolization) is handled by the underlying system libraries. The quality of the output depends on the presence of debugging symbols in the executable and its linked libraries.
+- Minimal, backend-abstracted API: callers either use a default behavior (NULL) or provide a configured struct mulle_stacktrace.
+- Symbolization is pluggable via a symboleizer callback type; trimming/filtering of frames is provided via callback hooks.
+- Formatting is separated from capture via an enum (format choices) so callers can request different textual representations without changing capture logic.
+- Lightweight: designed for library embedding and easy use in error/report paths.
 
 ## 3. Core API & Data Structures
 
-The API is contained entirely within `mulle-stacktrace.h`.
+API surface is in src/mulle-stacktrace.h (public header).
 
-### 3.1. `mulle-stacktrace.h`
+### 3.1. [mulle-stacktrace.h]
 
-#### Stack Trace Retrieval
-- `mulle_stacktrace_get(ignore)`: Captures the current stack trace.
-  - `ignore`: An `unsigned int` specifying the number of the most recent stack frames to ignore in the output. This is useful for hiding the stack trace functions themselves from the result. A typical value is 1 or 2.
-  - **Returns**: A `char **` (an array of strings), where each string represents a single frame of the stack trace. The caller is responsible for freeing this array and the strings it contains using `mulle_stacktrace_free()`. Returns `NULL` on failure.
+typedef mulle_stacktrace_symbolizer_t
+- Purpose: function signature for symbolizing an address into a string.
+- Signature: char *(fn)(void *address, size_t max, char *buf, size_t len, void **userinfo)
 
-#### Stack Trace Printing
-- `mulle_stacktrace_print(ignore)`: Captures the current stack trace and immediately prints it to `stderr`. This is a convenience function that combines `mulle_stacktrace_get` and printing.
-  - `ignore`: Same as in `mulle_stacktrace_get`.
+struct mulle_stacktrace
+- Purpose: runtime configuration for stacktrace capture & formatting.
+- Key fields:
+   - symbolize: pointer to symbolizer function (mulle_stacktrace_symbolizer_t *)
+   - trim_belly_fat: char *(*)(char *)  — optional string trimmer
+   - trim_arse_fat: int (*)(char *)      — optional in-place trimmer/normalizer
+   - is_boring: int (*)(char *s, int size) — predicate to hide "boring" frames
+   - backend: char *                     — textual backend identifier (borrowed)
+- Lifecycle:
+   - _mulle_stacktrace_init( struct mulle_stacktrace *stacktrace, mulle_stacktrace_symbolizer_t *symbolize, char *(*trim_belly_fat)(char *), int (*trim_arse_fat)(char *), int (*is_boring)(char *, int))
+     - initialize instance with callbacks
+   - _mulle_stacktrace_init_default( struct mulle_stacktrace *stacktrace)
+     - initialize a default instance (used internally when NULL is passed)
+- Core operations:
+   - _mulle_stacktrace(struct mulle_stacktrace *stacktrace, int offset, enum mulle_stacktrace_format format, FILE *fp)
+     - capture & print a stacktrace; offset skips frames (e.g., caller)
+   - mulle_stacktrace(struct mulle_stacktrace *stacktrace, FILE *fp)
+     - inline helper: calls _mulle_stacktrace(..., offset=1, format=trimmed)
+   - mulle_stacktrace_once(FILE *fp)
+     - convenience one-shot: use defaults, print trimmed stacktrace to fp
+- Inspection / helpers:
+   - mulle_stacktrace_get_backend(struct mulle_stacktrace *stacktrace)
+     - returns backend string (guaranteed non-NULL; may init a dummy if NULL passed)
+   - mulle_stacktrace_count_frames(void)
+     - returns number of frames captured by the backend (implementation detail)
+   - mulle_stacktrace_symbolize_nothing(...) 
+     - a provided symbolizer that produces minimal output (fallback)
 
-#### Memory Management
-- `mulle_stacktrace_free(trace)`: Frees the array of strings returned by `mulle_stacktrace_get`.
-  - `trace`: The `char **` array to be freed.
+enum mulle_stacktrace_format
+- mulle_stacktrace_normal   : full stacktrace
+- mulle_stacktrace_trimmed  : remove system frames (default)
+- mulle_stacktrace_linefeed : one frame per line
+- mulle_stacktrace_csv      : CSV output
+
+Other exported helpers:
+- Version helpers: mulle_stacktrace_get_version(), and inline getters for major/minor/patch.
 
 ## 4. Performance Characteristics
 
-- **Overhead:** Capturing a stack trace can be a relatively slow operation, as it may require the operating system to walk the stack and perform symbol lookups. It should not be used in performance-critical code paths.
-- **Memory Usage:** The memory required is proportional to the depth of the stack trace, as an array of strings is allocated to hold the symbol names for each frame.
-- **Thread-Safety:** The underlying `backtrace` functions are generally considered thread-safe.
+- Capture and symbolization cost proportional to number of frames O(n) where n is frames captured.
+- Symbolization might be expensive (name lookup, I/O); overall time dominated by backend symbol resolution.
+- Memory: minimal stack allocations; symbolizer may write into provided buffer (caller-provided stack memory).
+- Thread-safety: not universally guaranteed; thread-safety depends on chosen backend (libbacktrace, execinfo) and any global symbolization state. Assume "backend-dependent; do not rely on implicit locking" unless backend docs state otherwise.
 
 ## 5. AI Usage Recommendations & Patterns
 
-- **Debugging and Error Reporting:** The primary use case is for debugging. Call `mulle_stacktrace_print` in signal handlers (for crashes like `SIGSEGV`), in assertion failure macros, or in error-handling code paths to provide context about where the error occurred.
-- **Ignoring Frames:** When calling from a helper function, use the `ignore` parameter to produce cleaner output. For example, if you have a function `my_error_reporter()` that calls `mulle_stacktrace_print()`, you would call it with `ignore=1` to exclude `my_error_reporter` from the trace itself.
-- **Memory Management:** If you use `mulle_stacktrace_get` to retrieve the trace for custom processing, it is **critical** to call `mulle_stacktrace_free` on the result to avoid memory leaks. For simple printing, `mulle_stacktrace_print` is safer as it handles its own memory.
-- **Compiler Flags:** For the stack trace to be useful, the program must be compiled with debugging symbols. For GCC and Clang, this is the `-g` flag. Without debug symbols, the output will likely only contain raw addresses, which are much less helpful.
+- Best practices:
+   - For one-off logging use mulle_stacktrace_once(stdout) or mulle_stacktrace_once(stderr).
+   - For reusable config, call _mulle_stacktrace_init_default(&s) or _mulle_stacktrace_init(...) with custom symbolizer/trimmers and then call _mulle_stacktrace(&s, offset, format, fp).
+   - Treat backend and strings returned by API as borrowed; do not free them.
+   - Use offset=1 to skip the stacktrace internals (common pattern).
+- Common pitfalls:
+   - Passing non-thread-safe symbolizers without synchronization.
+   - Freeing/owning pointers returned from symbolizer or backend strings—these are typically borrowed.
+- Idiomatic "mulle-sde" pattern:
+   - Add as a component via mulle-sde add or clib install; rely on mulle-sde/mulle-core build rules for correct backend linking.
 
 ## 6. Integration Examples
 
-### Example 1: Printing a Stack Trace on Demand
-
-This example demonstrates how to call the stack trace function from within a deeply nested function to see the call chain.
-*Source: `demo/src/main.c` (adapted for clarity)*
+### Example 1: Simple one-shot print
 
 ```c
-#include <mulle-stacktrace/mulle-stacktrace.h>
 #include <stdio.h>
+#include <mulle-stacktrace/mulle-stacktrace.h>
 
-void function_c(void)
+void
+foo()
 {
-    printf("Printing stack trace from function_c:\n");
-    // Ignore 0 frames, so we see the call to mulle_stacktrace_print itself.
-    mulle_stacktrace_print(0);
+   // print a trimmed stacktrace to stdout
+   mulle_stacktrace_once( stdout);
 }
 
-void function_b(void)
+int
+main()
 {
-    function_c();
-}
-
-void function_a(void)
-{
-    function_b();
-}
-
-int main(int argc, char *argv[])
-{
-    function_a();
-    return 0;
+   foo();
+   return( 0);
 }
 ```
-**Execution Output (will vary by platform and compiler):**
 
-```
-Printing stack trace from function_c:
-0   my_program                          0x000000010f1b1e8c mulle_stacktrace_print + 44
-1   my_program                          0x000000010f1b1d28 function_c + 24
-2   my_program                          0x000000010f1b1d48 function_b + 24
-3   my_program                          0x000000010f1b1d68 function_a + 24
-4   my_program                          0x000000010f1b1d90 main + 16
-5   libdyld.dylib                       0x00007fff6c3e5cc9 start + 1
-```
-
-### Example 2: Retrieving and Freeing a Stack Trace
-
-This example shows how to get the stack trace as data, process it (in this case, just print it), and then correctly free the memory.
+### Example 2: Custom configured stacktrace with format and offset
 
 ```c
-#include <mulle-stacktrace/mulle-stacktrace.h>
 #include <stdio.h>
+#include <mulle-stacktrace/mulle-stacktrace.h>
 
-void process_stack_trace(void)
+int
+main()
 {
-    char **trace;
-    int i;
+   struct mulle_stacktrace   st;
 
-    // Get the stack trace, ignoring this function itself.
-    trace = mulle_stacktrace_get(1);
-    if (!trace)
-    {
-        fprintf(stderr, "Could not get stack trace.\n");
-        return;
-    }
+   // initialize default configuration (symbolizer etc.)
+   _mulle_stacktrace_init_default( &st);
 
-    printf("--- Custom Stack Trace Report ---\n");
-    for (i = 0; trace[i]; i++)
-    {
-        printf("Frame %d: %s\n", i, trace[i]);
-    }
-    printf("--- End of Report ---\n");
+   // print full stacktrace (skip 1 frame to omit this wrapper)
+   _mulle_stacktrace( &st, 1, mulle_stacktrace_normal, stdout);
 
-    // CRITICAL: Free the memory allocated by mulle_stacktrace_get.
-    mulle_stacktrace_free(trace);
-}
-
-int main(int argc, char *argv[])
-{
-    process_stack_trace();
-    return 0;
+   return( 0);
 }
 ```
 
 ## 7. Dependencies
 
-- `mulle-dlfcn`
-- `libbacktrace` (optional, for more detailed traces on some platforms)
+- mulle-core/mulle-dlfcn (runtime shared-library helpers)
+- mulle-core/libbacktrace (preferred symbolization backend; optional at build time)
+
+## 8. Shortcut
+
+- This TOC was generated from README.md, src/mulle-stacktrace.h, and clib.json (see asset/dox/TOC.md in repository).  If a previous TOC exists, consider comparing changes since its last commit to focus updates.

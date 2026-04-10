@@ -1,12 +1,11 @@
-## 0.4.0
-
-
-* README now lists libbacktrace as required dependency
+## 0.5.0
 
 
 
-* add support for `__wasm__` platform detection
-* make libbacktrace dependency private implementation detail
 
 
-* added a backtrace backend which is MUCH better than the previous stuff
+
+
+
+* **BREAKING** Stacktrace is now always built for static linkage; symbols are no longer exported for dynamic/shared builds.
+* Add explicit backend-selection macros `(MULLE_STRACKTRACE_BACKEND_{NONE,LIBBACKTRACE,EXECINFO})` and improved platform fallbacks; include a nop fallback and a Windows DllMain debug load message.

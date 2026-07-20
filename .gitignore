@@ -62,3 +62,5 @@ mulle-stacktrace.sublime-workspace
 .roam
 .graveyard
 *.tmp.*
+*.test.*
+.idea

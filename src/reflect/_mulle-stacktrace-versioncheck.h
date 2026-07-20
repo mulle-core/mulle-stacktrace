@@ -7,7 +7,7 @@
 
 #if defined( MULLE__DLFCN_VERSION)
 # ifndef MULLE__DLFCN_VERSION_MIN
-#  define MULLE__DLFCN_VERSION_MIN  ((0UL << 20) | (1 << 8) | 0)
+#  define MULLE__DLFCN_VERSION_MIN  ((0UL << 20) | (1 << 8) | 1)
 # endif
 # ifndef MULLE__DLFCN_VERSION_MAX
 #  define MULLE__DLFCN_VERSION_MAX  ((0UL << 20) | (2 << 8) | 0)

@@ -21,16 +21,19 @@ if( NOT __COMPILER_FLAGS_C_CMAKE__)
    endif()
 
    if( MULLE_TEST)
-      add_definitions( "-DMULLE_TEST=1" )
+      add_definitions( "-DMULLE_TEST=1")
    endif()
 
+   #
+   # THIS IS NOW HANDLED IN PostLibrary (and only set on a shared library)
+   #
    # set this as the default, as we expect shared libs to be included too
    # if this is not the case you need to change this on a case per case
    # basis
    #
-   if( BUILD_SHARED_LIBS)
-      add_definitions( "-DMULLE_INCLUDE_DYNAMIC=1" )
-   endif()
+   # if( BUILD_SHARED_LIBS)
+   #    add_definitions( "-DMULLE_INCLUDE_DYNAMIC=1")
+   # endif()
 
    #
    # MEMO: mulle-clang is currently too old for "mold", it doesn't know about

@@ -64,3 +64,4 @@ mulle-stacktrace.sublime-workspace
 *.tmp.*
 *.test.*
 .idea
+demo/.mulle/share/howto/

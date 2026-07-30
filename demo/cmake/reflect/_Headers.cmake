@@ -31,7 +31,6 @@ src/reflect/_demo-include-private.h
 #
 set( PRIVATE_GENERIC_HEADERS
 src/generic/include-private.h
-../src/include-private.h
 )
 
 #
@@ -49,7 +48,6 @@ src/reflect/_demo-provide.h
 #
 set( PUBLIC_GENERIC_HEADERS
 src/generic/include.h
-../src/include.h
 )
 
 #

@@ -23,14 +23,14 @@
 
 #include "_demo-include.h"
 
-#ifndef DEMO_GLOBAL
-# ifdef DEMO_BUILD
-#  define DEMO_GLOBAL    MULLE_C_GLOBAL
+#ifndef MULLE__STACKTRACE_GLOBAL
+# ifdef MULLE__STACKTRACE_GLOBAL
+#  define MULLE__STACKTRACE_GLOBAL    MULLE_C_GLOBAL
 # else
 #  if defined( DEMO_INCLUDE_DYNAMIC) || (defined( MULLE_INCLUDE_DYNAMIC) && ! defined( DEMO_INCLUDE_STATIC))
-#   define DEMO_GLOBAL   MULLE_C_GLOBAL
+#   define MULLE__STACKTRACE_GLOBAL   MULLE_C_GLOBAL
 #  else
-#   define DEMO_GLOBAL   extern
+#   define MULLE__STACKTRACE_GLOBAL   extern
 #  endif
 # endif
 #endif

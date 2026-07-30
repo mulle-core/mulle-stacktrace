@@ -17,18 +17,25 @@ if( NOT __ALL_LOAD_C_CMAKE__)
    # link statements. Sometimes it seemed as if Apple needed
    # -lx -force_load x though. ?
    #
+   # First, try to detect if we're using `lld`
    if( APPLE)
       set( FORCE_LOAD_PREFIX "-force_load ")
       set( BEGIN_ALL_LOAD)
       set( END_ALL_LOAD)
    else()
-      if( WIN32)
+      if( MSVC)  # not WIN32, currently we cross compile with the default clang
          set( FORCE_LOAD_PREFIX "-WHOLEARCHIVE:")
          set( BEGIN_ALL_LOAD)
          set( END_ALL_LOAD)
       else()
-         set( BEGIN_ALL_LOAD "-Wl,--whole-archive -Wl,--no-as-needed")
-         set( END_ALL_LOAD "-Wl,--as-needed -Wl,--no-whole-archive")
+         if( CMAKE_LINKER_ID STREQUAL "GNU" OR CMAKE_LINKER_ID STREQUAL "Gold" OR CMAKE_LINKER_ID STREQUAL "Solaris")
+            message(STATUS "Using a linker that supports --no-as-needed, adding the flag.")
+            set( BEGIN_ALL_LOAD "-Wl,--whole-archive -Wl,--no-as-needed")
+            set( END_ALL_LOAD "-Wl,--as-needed -Wl,--no-whole-archive")
+         else()
+            set( BEGIN_ALL_LOAD "-Wl,--whole-archive")
+            set( END_ALL_LOAD "-Wl,--no-whole-archive")
+         endif()
          set( FORCE_LOAD_PREFIX)
       endif()
    endif()
@@ -42,17 +49,22 @@ if( NOT __ALL_LOAD_C_CMAKE__)
    # ALL_LOAD_PREFIX can be set to "-Xlinker -reexport_library " and then 
    # symbols will be reexported. 
    #
-   function( CreateForceAllLoadList listname outputname)
+   # For Windows if we are actuall linking shared libraries, --wholearchive
+   # is a) not needed and b) a bad idea
+   function( CreateForceAllLoadList listname outputname leftovername)
       set( list "")
+      set( leftovers "${${leftovername}}")
       if( ${listname})
          set( list ${BEGIN_ALL_LOAD})
          foreach( library ${${listname}})
+            if( WIN32 OR MINGW)
+               if( "${library}" MATCHES "\\.dll\\.a$")
+                  list( PREPEND leftovers "${library}")
+                  continue()
+               endif()
+            endif()
             if( APPLE)
                list( APPEND list "${ALL_LOAD_PREFIX}${library}")
-               # if FORCE_LOAD_PREFIX is empty, we can skip the output
-               # which is handy sometimes when we have dynamic frameworks
-               # (hacque). But only on APPLE, where we emitted something
-               # already...
                if( FORCE_LOAD_PREFIX)
                   list( APPEND list "${FORCE_LOAD_PREFIX}${library}")
                endif()
@@ -63,7 +75,10 @@ if( NOT __ALL_LOAD_C_CMAKE__)
          list( APPEND list ${END_ALL_LOAD})
       endif()
       set( ${outputname} "${list}" PARENT_SCOPE)
+      set( ${leftovername} "${leftovers}" PARENT_SCOPE)
    endfunction()
+
+
 
    include( AllLoadAuxC OPTIONAL)
 

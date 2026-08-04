@@ -1,11 +1,11 @@
 //
 //  mulle-stacktrace.h
-//  mulle-core
+//  mulle-stacktrace
 //
-//  Created by Nat! on 28.10.18
 //  Copyright (c) 2018 Nat! - Mulle kybernetiK.
 //  Copyright (c) 2018 Codeon GmbH.
 //  All rights reserved.
+//
 //
 //  Redistribution and use in source and binary forms, with or without
 //  modification, are permitted provided that the following conditions are met:
@@ -33,7 +33,6 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
-
 #ifndef mulle_stacktrace_h__
 #define mulle_stacktrace_h__
 

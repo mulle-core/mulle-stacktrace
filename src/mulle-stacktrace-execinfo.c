@@ -33,14 +33,13 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 //
+#define _GNU_SOURCE
+
 #include "include-private.h"
 
 #include "mulle-stacktrace.h"
 
 #if MULLE_STRACKTRACE_BACKEND == MULLE_STRACKTRACE_BACKEND_EXECINFO
-
-#define _GNU_SOURCE
-
 
 #include <assert.h>
 #include <errno.h>

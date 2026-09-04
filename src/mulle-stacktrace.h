@@ -64,7 +64,7 @@
  *
  *  version:  major, minor, patch
  */
-#define MULLE__STACKTRACE_VERSION  ((0UL << 20) | (5 << 8) | 1)
+#define MULLE__STACKTRACE_VERSION  ((0UL << 20) | (5 << 8) | 2)
 
 
 static inline unsigned int   mulle_stacktrace_get_version_major( void)

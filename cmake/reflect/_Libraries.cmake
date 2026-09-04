@@ -35,21 +35,19 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
             )
          endif()
          message( STATUS "UNWIND_LIBRARY is ${UNWIND_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( UNWIND_LIBRARY)
+      endif()
+      if( UNWIND_LIBRARY)
             #
             # Add UNWIND_LIBRARY to OS_SPECIFIC_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark unwind no-cmake-add`
             #
-            list( APPEND OS_SPECIFIC_LIBRARIES ${UNWIND_LIBRARY})
+            if( NOT ${UNWIND_LIBRARY} IN_LIST OS_SPECIFIC_LIBRARIES)
+               list( APPEND OS_SPECIFIC_LIBRARIES ${UNWIND_LIBRARY})
+            endif()
             # intentionally left blank
-         else()
-            # Enable with: `mulle-sourcetree mark unwind require`
-            message( STATUS "UNWIND_LIBRARY is missing but it is marked as \"no-require\"")
-         endif()
+      else()
+         # Enable with: `mulle-sourcetree mark unwind require`
+         message( STATUS "UNWIND_LIBRARY is missing but it is marked as \"no-require\"")
       endif()
    endif()
 endif()

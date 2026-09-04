@@ -65,3 +65,6 @@ mulle-stacktrace.sublime-workspace
 *.test.*
 .idea
 demo/.mulle/share/howto/
+.kiro/
+TODO.md
+REVIEW.md

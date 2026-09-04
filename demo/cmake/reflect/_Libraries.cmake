@@ -22,26 +22,32 @@ if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
       list( APPEND OS_SPECIFIC_LIBRARIES "unwind")
    else()
       if( NOT UNWIND_LIBRARY)
-         find_library( UNWIND_LIBRARY NAMES
-            ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
-            ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_STATIC_LIBRARY_SUFFIX}
-         )
+         foreach( _TMP_UNWIND_LIBRARY_TARGET unwind)
+            if( TARGET ${_TMP_UNWIND_LIBRARY_TARGET})
+               set( UNWIND_LIBRARY ${_TMP_UNWIND_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT UNWIND_LIBRARY)
+            find_library( UNWIND_LIBRARY NAMES
+               ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_DEBUG_POSTFIX}${CMAKE_STATIC_LIBRARY_SUFFIX}
+               ${CMAKE_STATIC_LIBRARY_PREFIX}unwind${CMAKE_STATIC_LIBRARY_SUFFIX}
+            )
+         endif()
          message( STATUS "UNWIND_LIBRARY is ${UNWIND_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( UNWIND_LIBRARY)
+      endif()
+      if( UNWIND_LIBRARY)
             #
             # Add UNWIND_LIBRARY to OS_SPECIFIC_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark unwind no-cmake-add`
             #
-            list( APPEND OS_SPECIFIC_LIBRARIES ${UNWIND_LIBRARY})
+            if( NOT ${UNWIND_LIBRARY} IN_LIST OS_SPECIFIC_LIBRARIES)
+               list( APPEND OS_SPECIFIC_LIBRARIES ${UNWIND_LIBRARY})
+            endif()
             # intentionally left blank
-         else()
-            # Enable with: `mulle-sourcetree mark unwind require`
-            message( STATUS "UNWIND_LIBRARY is missing but it is marked as \"no-require\"")
-         endif()
+      else()
+         # Enable with: `mulle-sourcetree mark unwind require`
+         message( STATUS "UNWIND_LIBRARY is missing but it is marked as \"no-require\"")
       endif()
    endif()
 endif()

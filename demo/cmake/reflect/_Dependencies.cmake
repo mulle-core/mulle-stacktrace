@@ -32,7 +32,13 @@ endif()
 # Disable for this platform: `mulle-sourcetree mark mulle-c11 no-cmake-platform-${MULLE_UNAME}`
 # Disable for a sdk: `mulle-sourcetree mark mulle-c11 no-cmake-sdk-<name>`
 #
-if( NOT MULLE__C11_HEADER)
+foreach( _TMP_MULLE__C11_HEADER_TARGET_TARGET mulle-c11)
+   if( TARGET ${_TMP_MULLE__C11_HEADER_TARGET_TARGET})
+      set( MULLE__C11_HEADER_TARGET ${_TMP_MULLE__C11_HEADER_TARGET_TARGET})
+      break()
+   endif()
+endforeach()
+if( NOT MULLE__C11_HEADER AND NOT MULLE__C11_HEADER_TARGET)
    find_file( MULLE__C11_HEADER NAMES
       mulle-c11.h mulle-c11/mulle-c11.h
       NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
@@ -72,20 +78,13 @@ if( COLLECT_DEPENDENCY_LIBRARIES_AS_NAMES)
    list( APPEND DEPENDENCY_LIBRARIES "mulle-core")
 else()
    if( NOT MULLE__DLFCN_LIBRARY)
-      find_library( MULLE__DLFCN_LIBRARY NAMES
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         mulle-core
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-dlfcn${MULLE_PREFERRED_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${MULLE_FALLBACK_LIBRARY_SUFFIX}
-         mulle-dlfcn
-         NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-      )
-      if( NOT MULLE__DLFCN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+      foreach( _TMP_MULLE__DLFCN_LIBRARY_TARGET mulle-core mulle-dlfcn)
+         if( TARGET ${_TMP_MULLE__DLFCN_LIBRARY_TARGET})
+            set( MULLE__DLFCN_LIBRARY ${_TMP_MULLE__DLFCN_LIBRARY_TARGET})
+            break()
+         endif()
+      endforeach()
+      if( NOT MULLE__DLFCN_LIBRARY)
          find_library( MULLE__DLFCN_LIBRARY NAMES
             ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
             ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${MULLE_PREFERRED_LIBRARY_SUFFIX}
@@ -97,19 +96,33 @@ else()
             ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
             ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${MULLE_FALLBACK_LIBRARY_SUFFIX}
             mulle-dlfcn
+            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
          )
+         if( NOT MULLE__DLFCN_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+            find_library( MULLE__DLFCN_LIBRARY NAMES
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               mulle-core
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-dlfcn${MULLE_PREFERRED_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${MULLE_FALLBACK_LIBRARY_SUFFIX}
+               mulle-dlfcn
+            )
+         endif()
       endif()
       message( STATUS "MULLE__DLFCN_LIBRARY is ${MULLE__DLFCN_LIBRARY}")
-      #
-      # The order looks ascending, but due to the way this file is read
-      # it ends up being descending, which is what we need.
-      #
-      if( MULLE__DLFCN_LIBRARY)
+   endif()
+   if( MULLE__DLFCN_LIBRARY)
          #
          # Add MULLE__DLFCN_LIBRARY to DEPENDENCY_LIBRARIES list.
          # Disable with: `mulle-sourcetree mark mulle-dlfcn no-cmake-add`
          #
-         list( APPEND DEPENDENCY_LIBRARIES ${MULLE__DLFCN_LIBRARY})
+         if( NOT ${MULLE__DLFCN_LIBRARY} IN_LIST DEPENDENCY_LIBRARIES)
+            list( APPEND DEPENDENCY_LIBRARIES ${MULLE__DLFCN_LIBRARY})
+         endif()
          #
          # Inherit information from dependency.
          # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -152,9 +165,9 @@ else()
                message( STATUS "${_TMP_MULLE__DLFCN_DIR} not found")
             endif()
          endforeach()
-      else()
-         # Disable with: `mulle-sourcetree mark mulle-dlfcn no-require-link`
-         message( SEND_ERROR "MULLE__DLFCN_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+   else()
+      # Disable with: `mulle-sourcetree mark mulle-dlfcn no-require-link`
+      message( SEND_ERROR "MULLE__DLFCN_LIBRARY was not found in ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-core${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-core${MULLE_FALLBACK_LIBRARY_SUFFIX}
@@ -164,7 +177,6 @@ ${MULLE_PREFERRED_LIBRARY_PREFIX}mulle-dlfcn${MULLE_PREFERRED_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
 ${MULLE_FALLBACK_LIBRARY_PREFIX}mulle-dlfcn${MULLE_FALLBACK_LIBRARY_SUFFIX}
 mulle-dlfcn")
-      endif()
    endif()
 endif()
 
@@ -180,34 +192,41 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
       list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES "backtrace")
    else()
       if( NOT LIBBACKTRACE_LIBRARY)
-         find_library( LIBBACKTRACE_LIBRARY NAMES
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${MULLE_PREFERRED_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${MULLE_FALLBACK_LIBRARY_SUFFIX}
-            backtrace
-            NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
-         )
-         if( NOT LIBBACKTRACE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+         foreach( _TMP_LIBBACKTRACE_LIBRARY_TARGET backtrace)
+            if( TARGET ${_TMP_LIBBACKTRACE_LIBRARY_TARGET})
+               set( LIBBACKTRACE_LIBRARY ${_TMP_LIBBACKTRACE_LIBRARY_TARGET})
+               break()
+            endif()
+         endforeach()
+         if( NOT LIBBACKTRACE_LIBRARY)
             find_library( LIBBACKTRACE_LIBRARY NAMES
                ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${MULLE_PREFERRED_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
                ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${MULLE_FALLBACK_LIBRARY_SUFFIX}
                backtrace
+               NO_CMAKE_SYSTEM_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_FIND_ROOT_PATH
             )
+            if( NOT LIBBACKTRACE_LIBRARY AND NOT DEPENDENCY_IGNORE_SYSTEM_LIBARIES)
+               find_library( LIBBACKTRACE_LIBRARY NAMES
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_PREFERRED_LIBRARY_PREFIX}backtrace${MULLE_PREFERRED_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${CMAKE_DEBUG_POSTFIX}${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  ${MULLE_FALLBACK_LIBRARY_PREFIX}backtrace${MULLE_FALLBACK_LIBRARY_SUFFIX}
+                  backtrace
+               )
+            endif()
          endif()
          message( STATUS "LIBBACKTRACE_LIBRARY is ${LIBBACKTRACE_LIBRARY}")
-         #
-         # The order looks ascending, but due to the way this file is read
-         # it ends up being descending, which is what we need.
-         #
-         if( LIBBACKTRACE_LIBRARY)
+      endif()
+      if( LIBBACKTRACE_LIBRARY)
             #
             # Add LIBBACKTRACE_LIBRARY to ALL_LOAD_DEPENDENCY_LIBRARIES list.
             # Disable with: `mulle-sourcetree mark libbacktrace no-cmake-add`
             #
-            list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LIBBACKTRACE_LIBRARY})
+            if( NOT ${LIBBACKTRACE_LIBRARY} IN_LIST ALL_LOAD_DEPENDENCY_LIBRARIES)
+               list( APPEND ALL_LOAD_DEPENDENCY_LIBRARIES ${LIBBACKTRACE_LIBRARY})
+            endif()
             #
             # Inherit information from dependency.
             # Encompasses: no-cmake-searchpath,no-cmake-dependency,no-cmake-loader
@@ -250,10 +269,9 @@ if( NOT ${CMAKE_SYSTEM_NAME} MATCHES "Windows")
                   message( STATUS "${_TMP_LIBBACKTRACE_DIR} not found")
                endif()
             endforeach()
-         else()
-            # Enable with: `mulle-sourcetree mark libbacktrace require`
-            message( STATUS "LIBBACKTRACE_LIBRARY is missing but it is marked as \"no-require\"")
-         endif()
+      else()
+         # Enable with: `mulle-sourcetree mark libbacktrace require`
+         message( STATUS "LIBBACKTRACE_LIBRARY is missing but it is marked as \"no-require\"")
       endif()
    endif()
 endif()

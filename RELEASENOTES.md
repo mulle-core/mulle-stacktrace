@@ -1,3 +1,18 @@
+### 0.5.2
+
+
+
+
+
+* backend macro renamed to ``MULLE_STRACKTRACE_BACKEND`` so the execinfo backend is now actually enabled on Apple/BSD/Linux (previously ``MULLE_STRACKTRACE_STYLE`` was defined and ignored)
+* new ``MULLE_STACKTRACE_NO_LIBBACKTRACE`` define to force-disable the libbacktrace backend at build time
+
+
+
+* added missing license headers to internal include files
+* corrected project name and copyright years in source file headers
+* added API summary documentation link to README
+
 ### 0.5.1
 
 

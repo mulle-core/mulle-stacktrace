@@ -7,11 +7,13 @@
 - Solves unified stacktrace collection and formatting for debugging and logging; defaults to libbacktrace when available and falls back to execinfo on POSIX systems.
 - Key features: simple one-shot printing, configurable stacktrace instance (symbolizer callbacks, trimming), multiple output formats (normal, trimmed, linefeed, CSV).
 - Component of mulle-core; depends on mulle-dlfcn and libbacktrace (optional).
+- Backend selected at compile time via `MULLE_STRACKTRACE_BACKEND`: `libbacktrace` when `HAVE_LIB_LIBBACKTRACE` is defined (unless `MULLE_STACKTRACE_NO_LIBBACKTRACE` is set), otherwise `execinfo` on Apple/Linux/BSD, else none.
 
 ## 2. Key Concepts & Design Philosophy
 
 - Minimal, backend-abstracted API: callers either use a default behavior (NULL) or provide a configured struct mulle_stacktrace.
 - Symbolization is pluggable via a symboleizer callback type; trimming/filtering of frames is provided via callback hooks.
+- Backend is chosen in `src/mulle-stacktrace.h` at compile time: the `MULLE_STRACKTRACE_BACKEND` macro is set to one of `MULLE_STRACKTRACE_BACKEND_LIBBACKTRACE` (1), `MULLE_STRACKTRACE_BACKEND_EXECINFO` (2) or `MULLE_STRACKTRACE_BACKEND_NONE` (0). libbacktrace is preferred if `HAVE_LIB_LIBBACKTRACE` is defined; defining `MULLE_STACKTRACE_NO_LIBBACKTRACE` force-disables it. Execinfo is used on `__APPLE__`, `__linux__`, `__FreeBSD__`, `__OpenBSD__`, `__NetBSD__`; all other platforms get the nop backend.
 - Formatting is separated from capture via an enum (format choices) so callers can request different textual representations without changing capture logic.
 - Lightweight: designed for library embedding and easy use in error/report paths.
 
@@ -50,8 +52,8 @@ struct mulle_stacktrace
      - returns backend string (guaranteed non-NULL; may init a dummy if NULL passed)
    - mulle_stacktrace_count_frames(void)
      - returns number of frames captured by the backend (implementation detail)
-   - mulle_stacktrace_symbolize_nothing(...) 
-     - a provided symbolizer that produces minimal output (fallback)
+- mulle_stacktrace_symbolize_nothing( void *adresse, size_t max, char *buf, size_t len, void **userinfo)
+      - a provided symbolizer that produces minimal output (fallback)
 
 enum mulle_stacktrace_format
 - mulle_stacktrace_normal   : full stacktrace
@@ -59,8 +61,14 @@ enum mulle_stacktrace_format
 - mulle_stacktrace_linefeed : one frame per line
 - mulle_stacktrace_csv      : CSV output
 
+Compile-time backend selection (defined in src/mulle-stacktrace.h):
+- #define MULLE_STRACKTRACE_BACKEND_NONE          0
+- #define MULLE_STRACKTRACE_BACKEND_LIBBACKTRACE  1
+- #define MULLE_STRACKTRACE_BACKEND_EXECINFO      2
+- `MULLE_STRACKTRACE_BACKEND` is auto-defined to one of the above; `MULLE_STACKTRACE_NO_LIBBACKTRACE` can be defined at build time to force-disable the libbacktrace backend.
+
 Other exported helpers:
-- Version helpers: mulle_stacktrace_get_version(), and inline getters for major/minor/patch.
+- Version helpers: mulle_stacktrace_get_version() (current version 0.5.2), and inline getters mulle_stacktrace_get_version_major(), mulle_stacktrace_get_version_minor(), mulle_stacktrace_get_version_patch().
 
 ## 4. Performance Characteristics
 
@@ -129,8 +137,4 @@ main()
 ## 7. Dependencies
 
 - mulle-core/mulle-dlfcn (runtime shared-library helpers)
-- mulle-core/libbacktrace (preferred symbolization backend; optional at build time)
-
-## 8. Shortcut
-
-- This TOC was generated from README.md, src/mulle-stacktrace.h, and clib.json (see asset/dox/TOC.md in repository).  If a previous TOC exists, consider comparing changes since its last commit to focus updates.
+- mulle-core/libbacktrace (preferred symbolization backend; optional at build time, can be disabled via `MULLE_STACKTRACE_NO_LIBBACKTRACE`)

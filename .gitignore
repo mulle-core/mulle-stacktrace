@@ -68,3 +68,9 @@ demo/.mulle/share/howto/
 .kiro/
 TODO.md
 REVIEW.md
+.vscode/
+.touch
+*.orig
+*.workspace
+*.*-workspace
+*.old

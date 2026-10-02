@@ -1,8 +1,0 @@
-{
-  "files.exclude": {
-    "__error": "Not found",
-    "src/_mulle-stacktrace-include-private.h": true,
-    "src/_mulle-stacktrace-include.h": true,
-    "src/mulle-stacktrace-standalone.c": true
-  }
-}

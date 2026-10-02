@@ -49,7 +49,7 @@ uint32_t   mulle_stacktrace_get_version( void)
 
 
 
-#if defined( _WIN32) && defined( MULLE_INCLUDE_DYNAMIC) && defined( MULLE_STACKTRACE_DEBUG) && ! defined( MULLE__CORE__ALL_LOAD_BUILD)
+#if defined( _WIN32) && defined( MULLE_INCLUDE_DYNAMIC) && defined( MULLE_STACKTRACE_DEBUG) && ! defined( MULLE__CORE__ALL__LOAD_BUILD)
 BOOL WINAPI   DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 {
    MULLE_C_UNUSED( hinstDLL);

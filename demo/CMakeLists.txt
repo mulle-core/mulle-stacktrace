@@ -16,7 +16,7 @@ include( Environment)
 
 include( Files)
 
-include( IDESupport OPTIONAL)
+# include( IDESupport OPTIONAL)
 
 include( Dependencies OPTIONAL)
 

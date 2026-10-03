@@ -68,7 +68,7 @@ Compile-time backend selection (defined in src/mulle-stacktrace.h):
 - `MULLE_STRACKTRACE_BACKEND` is auto-defined to one of the above; `MULLE_STACKTRACE_NO_LIBBACKTRACE` can be defined at build time to force-disable the libbacktrace backend.
 
 Other exported helpers:
-- Version helpers: mulle_stacktrace_get_version() (current version 0.5.2), and inline getters mulle_stacktrace_get_version_major(), mulle_stacktrace_get_version_minor(), mulle_stacktrace_get_version_patch().
+- Version helpers: mulle_stacktrace_get_version() (current version 0.5.3), and inline getters mulle_stacktrace_get_version_major(), mulle_stacktrace_get_version_minor(), mulle_stacktrace_get_version_patch().
 
 ## 4. Performance Characteristics
 

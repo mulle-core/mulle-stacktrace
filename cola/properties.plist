@@ -6,7 +6,6 @@
       language="c";
       dialect="c";
       name="mulle-stacktrace";
-      version="0.5.3";
       user="mulle-core";
       repo="mulle-stacktrace";
       homepage="https://github.com/mulle-core/mulle-stacktrace";

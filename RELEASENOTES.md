@@ -4,6 +4,12 @@
 
 
 
+
+
+
+
+
+
 * DllMain is emitted again for Windows debug dynamic builds after mulle-core renamed `MULLE__CORE__ALL_LOAD_BUILD` to `MULLE__CORE__ALL__LOAD_BUILD`
 
 ### 0.5.2
